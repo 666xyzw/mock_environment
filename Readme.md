@@ -8,7 +8,7 @@
 5. [Configuration Files](#config)
 6. [Scripts](#scripts)
 
-## Structura <a name="structure"></a>
+## Structure <a name="structure"></a>
 
 The ansible scripts are separated in two categories, based on the books, so everything that belongs to the first book (rh124) it is put into the rh124 folder; everything that belongs to the second book (rh134) you will get it in the rh134 folder.
 
@@ -93,7 +93,7 @@ La instalarea acestor masini, din meniu, trebuie se selectati si optiunile de Sy
 
 Pentru simularea scripturilor de start/finish din laboratoarele din carti, este nevoie sa instalati Ansible pe **workstation**.
 
-## Connectivitate <a name="connectivity"></a>
+## Connectivity <a name="connectivity"></a>
 
 De la **workstation** catre celelalte doua masini connexiunea se face prin SSH; trebuie sa generati o cheie standard SSH, pentru user-ul **student**, care trebuie copiat pe restul masinilor (**servera**, **serverb**). Cheia generata trebuie sa se numeasca *ansible*.
 Aceasta cheie va fii folosit si de catre Ansible.
@@ -123,7 +123,7 @@ Generarea cheii se face in urmatorul fel:
 
 Fisierul respectiv il gasiti si in repo, trebuie doar sa-o copiati in path-ul correct.
 
-## Instalare Ansible <a name="ansible_install"></a>
+## Installing Ansible <a name="ansible_install"></a>
 
 Pentru instalarea de Ansible pe **workstation** trebuie sa rulati urmatoarele comenzi:
 
@@ -131,7 +131,7 @@ Pentru instalarea de Ansible pe **workstation** trebuie sa rulati urmatoarele co
 
     [root@workstation ~]# dnf install ansible
 
-## Fisiere de configuratie <a name="config"></a>
+## Consiguration Files <a name="config"></a>
 Ca si configuratie, in primul rand trebuie populat fisierul "/etc/hosts" cu numele si IP-ul masinilor, ex.:
 
     [student@workstation ~]$ cat /etc/hosts
@@ -160,7 +160,7 @@ Acesta trebuie facut pe fiecare masina in parte, ca sa aiba interconnectivitate 
 
 Dupa modificarea fisierului hosts, mai aveti nevoie de fisierul **.ansible.cfg**. Acesta se pune in folderul $HOME al user-ului **student** (/home/student/.ansible.cfg)
 
-## Scripturi <a name="scripts"></a>
+## Scripts <a name="scripts"></a>
     
 Scripturile sunt de doua feluri:
 
