@@ -1,4 +1,4 @@
-# EX200 Mock Environment
+# Sysadmin I and II Mock Environment
 
 # Table of Content
 1. [Structure](#structure)
