@@ -1,0 +1,30 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Destroying Stratis Pool
+      shell: "stratis pool destroy stratispool1"
+      ignore_errors: true
+
+    - name: Stopping Stratis Service
+      shell: "systemctl disable --now stratisd"
+      ignore_errors: true
+
+    - name: Removing Stratis from System
+      shell: "dnf remove stratisd stratis-cli -y"
+      ignore_errors: true
+
+    - name: Restoring /etc/fstab File
+      lineinfile:
+        path: "/etc/fstab"
+        regexp: "^UUID=(.*)\t/stratisvol(.*)"
+        line: ""
+        state: present
+      ignore_errors: true
+
+    - name: Removing Directories
+      shell: "rmdir /stratisvol /stratisvol-snap"
+      ignore_errors: true

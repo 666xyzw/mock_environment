@@ -1,0 +1,28 @@
+---
+
+- hosts: servera
+  become: true
+  become_user: root
+
+
+  tasks:
+
+    - name: Remove Apache
+      shell: "dnf remove httpd -y"
+
+    - name: Restore Firewall
+      shell: "firewall-cmd --remove-service=http --permanent && firewall-cmd --reload"
+
+    - name: Cleanup Additional Files
+      loop:
+        - /home/student/public_html
+        - /etc/httpd
+      file:
+        path: "{{ item }}"
+        state: absent
+
+    - name: Reseting Permission on home Folder
+      shell: "chmod 0700 /home/student"
+
+    - name: Reverting SELinux Permissions
+      shell: "setsebool -P httpd_enable_homedirs 0"

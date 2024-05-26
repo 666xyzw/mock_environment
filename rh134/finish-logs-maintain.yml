@@ -1,0 +1,14 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Resetting chrony File
+      shell: "mv /etc/chrony-conf.bck /etc/chrony.conf"
+      ignore_errors: true
+
+    - name: Resetting Local Time
+      shell: "timedatectl set-timezone Europe/Bucharest"
+      ignore_errors: true

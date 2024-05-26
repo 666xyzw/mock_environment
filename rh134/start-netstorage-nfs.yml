@@ -1,0 +1,74 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Installing NFS Service
+      dnf:
+        name: nfs-utils
+        state: latest
+        update_cache: true
+
+    - name: Creating Admin Group
+      shell: "groupadd admin"
+
+    - name: Creating Sub-Directory Tree
+      file:
+        path: /shares
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+      file:
+        path: /shares/public
+        state: directory
+        owner: root
+        group: admin
+        mode: 0775
+
+    - name: Creating Data
+      loop:
+        - /shares/public/Delivered.txt
+        - /shares/public/NOTES.txt
+        - /shares/public/README.txt
+        - /shares/public/Tracking.txt
+      file:
+        path: "{{ item }}"
+        state: touch
+        owner: root
+        group: admin
+        mode: 0644
+
+    - name: Populating Notes
+      copy:
+        dest: "/shares/public/NOTES.txt"
+        content: |
+         ###In this file you can log all your notes###
+
+    - name: Configuring Share
+      shell: "echo '/shares/public   servera(rw,no_root_squash)' > /etc/exports"
+
+    - name: Starting NFs Service
+      shell: "systemctl enable --now nfs-server && systemctl enable --now rpcbind"
+
+    - name: Configuring Firewall
+      shell: "firewall-cmd --add-service=nfs --permanent && firewall-cmd --reload"
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Creating admin Group
+      shell: "groupadd admin"
+
+    - name: Creating Users
+      shell: "useradd -G admin admin1 -p '$6$xvGCUJW/KNIm2nee$Fa3G5PCAgTnq6DQ6daj5m6bQhMAS146yirIKjL8EAHxJjQh7Ib.qkFtL8LTEZlFVkGyJraIp0QEcb58xGyRCs.' && useradd -G admin sysmanager1 -p '$6$xvGCUJW/KNIm2nee$Fa3G5PCAgTnq6DQ6daj5m6bQhMAS146yirIKjL8EAHxJjQh7Ib.qkFtL8LTEZlFVkGyJraIp0QEcb58xGyRCs.'"
+
+    - name: Installing nfs-utils
+      shell: "dnf install -y nfs-utils"
+
+    - name: Creating Backup of /etc/fstab
+      shell: "cp /etc/fstab /etc/fstab.bck"

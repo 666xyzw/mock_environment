@@ -1,0 +1,16 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Removing Extra Packages
+      shell: "dnf remove httpd pykickstart -y && rm -rf /var/www"
+      ignore_errors: true
+
+    - name: Resetting Firewall
+      shell: "firewall-cmd --remove-port=80/tcp --permanent && firewall-cmd --reload"
+
+    - name: Removing Kickstart File from Home Directory
+      shell: "rm -rf /home/student/kickstart.cfg"

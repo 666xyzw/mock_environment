@@ -1,0 +1,14 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+    - name: Cleanup!
+      loop:
+        - /etc/tmpfiles.d/tmp.conf
+        - /etc/tmpfiles.d/momentary.conf
+        - /run/momentary
+      file:
+        path: "{{ item }}"
+        state: absent

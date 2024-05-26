@@ -1,0 +1,37 @@
+---
+
+- hosts: localhost
+  become: false
+
+  tasks:
+
+    - name: Stopping Services
+      shell: "ssh contsvc@servera \"systemctl --user disable --now container-webapp\" "
+      ignore_errors: true
+
+    - name: Stopping & Removing Containers
+      shell: "ssh contsvc@servera \"podman stop -a && podman rm -a -f\" "
+      ignore_errors: true
+
+    - name: Deleting Container Image
+      shell: "ssh contsvc@servera \"podman rmi -a -f\" "
+      ignore_errors: true
+    
+    - name: Resetting Linger
+      shell: "ssh contsvc@servera loginctl disable-linger"
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Removing podman From System
+      shell: "sudo dnf remove -y container-tools"
+
+    - name: Removing contsvc User
+      shell: "pkill -u contsvc && sleep 30s && userdel -r contsvc"
+      ignore_errors: true
+
+    - name: Cleaning /tmp Folder
+      shell: "rm -rf /tmp/containers-services"
+      ignore_errors: true

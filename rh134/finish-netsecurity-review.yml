@@ -1,0 +1,27 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Restoring Firewall
+      shell: "firewall-cmd --remove-port=1001/tcp --permanent && firewall-cmd --remove-service=http --permanent && firewall-cmd --reload"
+      ignore_errors: true
+
+    - name: Stopping Apache
+      shell: "systemctl disable --now httpd"
+
+    - name: Removing Apache from System
+      shell: "dnf remove httpd -y"
+
+    - name: Cleaning System
+      loop:
+        - /etc/httpd
+        - /var/www
+      file:
+        path: "{{ item }}"
+        state: absent
+
+    - name: Removing custom Port from SELinux
+      shell: "semanage port -d -t http_port_t -p tcp 1001"

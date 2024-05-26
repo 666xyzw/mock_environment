@@ -1,0 +1,12 @@
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Creating Backup of /etc/chrony.conf File
+      shell: "cp /etc/chrony.conf /etc/chrony-conf.bck"
+      ignore_errors: true
+
+    - name: Configuring NTP
+      shell: "timedatectl set-ntp off"
+      ignore_errors: true

@@ -1,0 +1,20 @@
+---
+
+- hosts: servera
+  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+
+    - name: Update Cache
+      dnf:
+        update_cache: true
+
+    - name: Installing Postfix
+      dnf:
+        name: postfix
+        state: latest
+
+    - name: Starting Service
+      shell: systemctl enable --now postfix

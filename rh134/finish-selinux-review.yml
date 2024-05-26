@@ -1,0 +1,29 @@
+---
+
+- hosts: serverb
+  become: yes
+  become_user: root
+
+  tasks:
+
+    - name: Remove Apache
+      shell: "dnf remove httpd -y"
+
+    - name: Removing /lab-content folder from SELinux
+      shell: "semanage fcontext -d -t httpd_sys_content_t '/lab-content(/.*)?' && restorecon -R /lab-content"
+
+
+    - name: Cleaning Up the Sistem
+      loop:
+        - /lab-content/lab.html
+        - /lab-content
+        - /etc/httpd/conf.d/lab.conf
+        - /etc/httpd/conf.d
+        - /etc/httpd/conf
+        - /etc/httpd
+      file:
+        path: "{{ item }}"
+        state: absent
+
+    - name: Restoring Firewall 
+      shell: "firewall-cmd --remove-service=http --permanent && firewall-cmd --reload"

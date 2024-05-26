@@ -1,0 +1,63 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Unmounting Share
+      shell: "umount -lf /public"
+
+    - name: Removing Share from fstab
+      lineinfile: 
+        line: "serverb:/shares/public /public nfs rw,sync 0 0"
+        regex: "^serverb:/shares/public"
+        path: "/etc/fstab"
+        state: absent
+    
+    - name: Updating Systemconfiguration
+      shell: "systemctl daemon-reload"
+
+    - name: Removing Users and Groups
+      shell: "userdel -r admin1 && userdel -r sysmanager1 && groupdel admin"
+
+    - name: Cleaning Up System
+      file:
+        path: /public
+        state: absent
+
+    - name: Uninstalling nfs-utils
+      shell: "dnf remove -y nfs-utils"
+
+    - name: Restoring Original /etc/fstab File
+      shell: "mv /etc/fstab.bck /etc/fstab"
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Stopping and Removing NFS Service
+      shell: "systemctl disable --now nfs-server && dnf remove nfs-server -y"
+
+    - name: Removing Groups
+      shell: "groupdel admin"
+
+    - name: Cleaning Up System
+      loop:
+        - /shares/public/Delivered.txt
+        - /shares/public/NOTES.txt
+        - /shares/public/README.txt
+        - /shares/public/Tracking.txt
+        - /shares/public/Test.txt
+        - /shares/public
+        - /shares
+      file:
+        path: "{{ item }}"
+        state: absent
+
+    - name: Reconfiguring Firewall
+      shell: "firewall-cmd --remove-service=nfs"
+
+    - name: Removing Share Configuration
+      shell: "echo > /etc/exports"

@@ -1,0 +1,17 @@
+---
+
+- hosts: serverb
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Configuring SSH Access
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regex: "#PermitRootLogin prohibit-password"
+        line: "PermitRootLogin yes"
+        state: present
+
+    - name: Restarting SSH Service
+      shell: "systemctl restart sshd"

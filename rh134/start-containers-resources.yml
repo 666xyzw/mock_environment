@@ -1,0 +1,19 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Installing Podman
+      shell: "dnf install container-tools -y"
+
+
+
+- hosts: localhost
+  become: true  
+  
+  tasks:
+
+    - name: Install MariaDB
+      shell: "dnf install -y mariadb"

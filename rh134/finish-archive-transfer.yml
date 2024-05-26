@@ -1,0 +1,27 @@
+---
+
+- hosts: servera
+  become: false
+  gather_facts: false
+
+  tasks:
+    - name: Cleanup!
+      file:
+        path: /home/student/serverbackup
+        state: absent
+
+- hosts: serverb
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Resetting SSH Access
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regex: "PermitRootLogin yes"
+        line: "#PermitRootLogin prohibit-password"
+        state: present
+
+    - name: Reloading SSH Service
+      shell: "systemctl restart sshd"

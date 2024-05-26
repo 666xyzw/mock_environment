@@ -1,0 +1,17 @@
+---
+
+- hosts: serverb
+  become: true
+  become_method: sudo
+  become_user: root
+
+
+  tasks:
+
+    - name: Remove tuned
+      dnf:
+        name: tuned
+        state: absent
+
+    - name: Kill Processes
+      shell: "pkill sha1sum && pkill md5sum"

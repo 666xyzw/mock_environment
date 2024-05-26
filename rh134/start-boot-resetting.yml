@@ -1,0 +1,9 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Changing root Password
+      shell: "usermod -p '$6$jjhJNiLV1l.Zhopt$VjWhr5mWYZK3lQVw8oqkbq4JFiXshE/0gGe92mveeU1rIkbovJW8eP3yJEZCkg8pfWkwAxiHY8sTgrbN/rXKc/' root"

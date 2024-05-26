@@ -1,0 +1,16 @@
+---
+
+- hosts: servera
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Install tuned Service
+      dnf:
+        name: tuned
+        state: latest
+        update_cache: true
+
+    - name: Starting Service
+      shell: "systemctl enable --now tuned"

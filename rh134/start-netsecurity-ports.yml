@@ -1,0 +1,23 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Install Apache
+      dnf:
+        name: httpd
+        state: latest
+        update_cache: true
+      ignore_errors: true
+
+    - name: Edit Apache Configuration
+      lineinfile:
+        path: "/etc/httpd/conf/httpd.conf"
+        regexp: "Listen 80"
+        line: "Listen 82"
+        state: present
+
+    - name: Configure Index Page
+      shell: "echo Hello > /var/www/html/index.html"

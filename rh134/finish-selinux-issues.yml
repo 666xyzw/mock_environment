@@ -1,0 +1,29 @@
+---
+
+- hosts: servera
+  become: true
+  become_user: root
+
+  tasks:
+
+    - name: Remove Apache
+      shell: "dnf remove httpd -y"
+    
+    - name: Reconfiguring Firewall
+      shell: "firewall-cmd --remove-service=http --permanent && firewall-cmd --reload"
+
+    - name: Restoring SELinux Policies
+      shell: "semanage fcontext -d -t httpd_sys_content_t '/custom(/.*)?' && restorecon -Rv /custom"
+
+    - name: Cleaning Up Server
+      loop:
+        - /custom/index.html
+        - /custom
+        - /etc/httpd/conf.d/custom.conf
+        - /etc/httpd/conf
+        - /etc/httpd/conf.d
+        - /etc/httpd
+
+      file:
+        path: "{{ item }}"
+        state: absent

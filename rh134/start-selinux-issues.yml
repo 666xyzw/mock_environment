@@ -1,0 +1,51 @@
+---
+
+- hosts: servera
+  become: true
+  become_user: root
+
+  tasks:
+    - name: Install Apache
+      shell: "dnf install httpd -y"
+
+    - name: Configure Firewall
+      shell: "firewall-cmd --add-service=http --permanent && firewall-cmd --reload"
+
+    - name: Create Custom Directory
+      file:
+        path: /custom
+        state: directory
+        owner: root 
+        group: root
+        mode: 0755
+
+    - name: Creating Custom Index File
+      copy:
+        dest: "/custom/index.html"
+        owner: apache
+        group: apache
+        mode: 0644
+        content: |
+          This is SERVERA
+
+    - name: Creating Custom Apache Config File
+      copy:
+        dest: "/etc/httpd/conf.d/custom.conf"
+        owner: root
+        group: root
+        mode: 0644
+        content: | 
+          <VirtualHost *:80>
+             ServerName servera
+             DocumentRoot "/custom"
+
+             <Directory "/custom">
+
+               Require all granted
+
+             </Directory>
+
+          </VirtualHost>
+
+    - name: Start Apache Web Server
+      shell: "systemctl enable --now httpd"

@@ -1,0 +1,27 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+    - name: Install mkpasswd on system
+      dnf:
+        name: mkpasswd
+        state: latest
+        update_cache: true
+
+    - name: Change user password using external tool
+      command: "mkpasswd -m SHA-512 root123456"
+      register: hashed_password
+
+    - name: Update user password
+      user:
+        name: root
+        password: "{{ hashed_password.stdout }}"
+        state: present
+   
+    - name: Creating Backup of /etc/fstab
+      shell: "cp /etc/fstab /etc/fstab.bck"
+
+    - name: Changing fstab File
+      shell: echo "UUID=4d5c85a5-8921-4a06-8aff-80567e9689bc /olddata xfs defaults 0 0" >> /etc/fstab

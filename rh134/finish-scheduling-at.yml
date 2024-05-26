@@ -1,0 +1,18 @@
+---
+
+- hosts: servera
+  become: false
+
+  tasks:
+
+    - name: Removing hanging at Job
+      shell: "atrm $(atq | awk '{print $1}')"
+      ignore_errors: true
+
+    - name: Deleting Files
+      loop:
+        - /home/student/cookies.txt
+        - /home/student/myjob.txt
+      file:
+        path: "{{ item }}"
+        state: absent

@@ -1,0 +1,26 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Removing File
+      loop:
+        - /etc/cron.daily/usercount
+        - /etc/systemd/system/sysstat-collect.timer
+        - /var/log/sa
+      file:
+        path: "{{ item }}"
+        state: absent
+
+    - name: Reloading System Daemon
+      shell: "systemctl daemon-reload"
+
+
+    - name: Stopping sysstat Daemon
+      shell: "systemctl disable --now sysstat-collect.timer"
+      ignore_errors: true
+
+    - name: Deleting sysstat
+      shell: "dnf remove sysstat -y"

@@ -1,0 +1,26 @@
+---
+
+- hosts: servera
+  become: true
+  become_method: sudo
+  become_user: root
+
+
+  tasks:
+
+    - name: Disable Firewall Service
+      shell: "firewall-cmd --remove-service=http --permanent && firewall-cmd --reload"
+
+    - name: Removing httpd from System
+      shell: "dnf remove -y httpd"
+
+    - name: Restoring SELinux File context
+      shell: "semanage fcontext -d -t httpd_sys_content_t '/custom(/.*)?' && restorecon -Rv /custom"
+
+    - name: Cleanup OS
+      loop:
+        - /custom/index.html
+        - /custom
+      file:
+        path: "{{ item }}"
+        state: absent

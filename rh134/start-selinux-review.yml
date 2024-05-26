@@ -1,0 +1,56 @@
+---
+
+- hosts: serverb
+  become: true
+  become_user: root
+
+  tasks:
+
+    - name: Install Apache
+      shell: "dnf install httpd -y"
+
+    - name: Configure Firewall
+      shell: "firewall-cmd --add-service=http --permanent && firewall-cmd --reload"
+
+    - name: Creating Folder
+      file:
+        path: /lab-content
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Creating Custom Index File
+      copy:
+        dest: "/lab-content/lab.html"
+        owner: apache
+        group: apache
+        mode: 0644
+        content: |
+          This is the html file for the SELinux final lab on SERVERB.
+
+    - name: Creating Custom Apache Configuration File
+      copy:
+        dest: "/etc/httpd/conf.d/lab.conf"
+        owner: root
+        group: root
+        mode: 0644
+        content: |
+          <VirtualHost *:80>
+            
+            ServerName serverb
+
+            DocumentRoot "/lab-content"
+
+
+            <Directory "/lab-content">
+              
+              Require all granted
+
+            </Directory>
+
+          </VirtualHost>
+
+    - name: Starting Apache Web Server
+      shell: "systemctl enable --now httpd"
+      ignore_errors: true

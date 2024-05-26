@@ -1,0 +1,19 @@
+---
+
+- hosts: servera
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Installing rsync
+      shell: "dnf install -y rsync"
+
+- hosts: serverb
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Installing rsync
+      shell: "dnf install -y rsync"

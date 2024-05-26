@@ -1,0 +1,15 @@
+---
+
+- hosts: servera
+  become: false
+
+  tasks:
+
+    - name: Finishing Lab
+      loop:
+        - firstscript.sh
+        - output.txt
+      file:
+        path: "{{ item }}"
+        state: absent
+        force: yes

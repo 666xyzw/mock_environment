@@ -1,0 +1,139 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+  
+    - name: Install NFS Server
+      dnf:
+        name: nfs-utils
+        state: latest
+        update_cache: true
+
+    - name: Creating Groups
+      shell: "groupadd -g 1002 operators && groupadd -g 1003 production && groupadd -g 1004 managers"
+      ignore_errors: true
+
+    - name: Creating Users
+      shell: "useradd -G operators contractor1 && useradd -G operators consultant1 && useradd -G production dbuser1 && useradd -G production sysadmin1 && useradd -G managers manager1 && useradd -G managers manager2"
+      ignore_errors: true
+
+    - name: Creating Share Directory
+      file:
+        path: /shares
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Creating operators Share
+      file:
+        path: /shares/operation
+        state: directory
+        owner: root
+        group: operators
+        mode: 0770
+  
+    - name: Creating production  Share
+      file:
+        path: /shares/production
+        state: directory
+        owner: root
+        group: production
+        mode: 0770
+    
+    - name: Creating management Share
+      file:
+        path: /shares/management
+        state: directory
+        owner: root
+        group: managers
+        mode: 0770
+    
+    - name: Setting Folder Permissions
+      shell: "chmod -R 2770 /shares/*"
+
+    - name: Creating Operations File
+      file:
+        path: "/shares/operation/Welcome.txt"
+        state: touch
+        owner: root
+        group: operators
+        mode: 0644
+
+    - name: Creating Production File
+      file:
+        path: "/shares/production/Welcome.txt"
+        state: touch
+        owner: root
+        group: production
+        mode: 0644
+
+    - name: Creating Managers File
+      file:
+        path: "/shares/management/Welcome.txt"
+        state: touch
+        owner: root
+        group: managers
+        mode: 0644
+
+    - name: Populating Operators File
+      copy:
+        dest: "/shares/operation/Welcome.txt"
+        owner: root
+        group: operators
+        mode: 0644
+        content: |
+          ###Welcome to Operation Folder on SERVERB###
+
+    - name: Populating Production File
+      copy:
+        dest: "/shares/production/Welcome.txt"
+        owner: root
+        group: production
+        mode: 0644
+        content: |
+          ###Welcome to Production Folder on SERVERB###
+
+    - name: Populating Managers File
+      copy:
+        dest: "/shares/management/Welcome.txt"
+        owner: root
+        group: managers
+        mode: 0644
+        content: |
+          ###Welcome to Management Folder on SERVERB###
+
+    - name: Populating the /etc/exports File
+      shell: "echo \"/shares/management servera(rw,no_root_squash)\" > /etc/exports && echo \"/shares/production servera(rw,no_root_squash)\" >> /etc/exports; echo \"/shares/operation servera(rw,no_root_squash)\" >> /etc/exports" 
+
+    - name: Starting NFS Server
+      shell: "systemctl enable --now nfs-server && systemctl enable --now rpcbind.service"
+
+    - name: Configuring Firewall
+      shell: "firewall-cmd --add-service=nfs --permanent && firewall-cmd --reload"
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Creating Groups
+      shell: "groupadd -g 1002 operators && groupadd -g 1003 production && groupadd -g 1004 managers"
+      ignore_errors: true
+
+    - name: Creating Users
+      shell: "useradd -G operators contractor1 && useradd -G operators consultant1 && useradd -G production dbuser1 && useradd -G production sysadmin1 && useradd -G managers manager1 && useradd -G managers manager2"
+      ignore_errors: true
+
+    - name: Creating Mount Points
+      file:
+        path: "/remote"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Installing Required Packages
+      shell: "dnf install nfs-utils -y"

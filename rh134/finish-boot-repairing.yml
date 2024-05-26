@@ -1,0 +1,9 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Restoring /etc/fstab File
+      shell: "mv /etc/fstab.bck /etc/fstab"

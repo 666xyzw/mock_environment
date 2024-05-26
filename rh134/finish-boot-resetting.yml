@@ -1,0 +1,11 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Cleaning System
+      file:
+        path: /.autorelabel
+        state: absent

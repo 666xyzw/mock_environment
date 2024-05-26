@@ -1,0 +1,39 @@
+---
+
+- hosts: localhost
+  become: false
+
+
+  tasks:
+
+    - name: Setup Local Environment
+      file:
+        path: /home/student/bin
+        state: directory
+        owner: student
+        group: student
+        mode: 0755
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Creating sudoers backup  
+      shell: "cp /etc/sudoers /etc/sudoers.bck"
+
+    - name: Setup servera environment
+      shell: "echo 'student ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers"
+      ignore_errors: true
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Creating sudoers backup  
+      shell: "cp /etc/sudoers /etc/sudoers.bck"
+
+    - name: Setup serverb Environment
+      shell: "echo 'student ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers"
+      ignore_errors: true

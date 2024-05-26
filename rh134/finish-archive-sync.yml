@@ -1,0 +1,23 @@
+---
+
+- hosts: serverb
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Cleanup
+      file:
+        path: /home/student/serverlogs
+        state: absent
+
+    - name: Removing rsync
+      shell: "dnf remove -y rsync"
+       
+- hosts: servera
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Removing rsync
+      shell: "dnf remove -y rsync"

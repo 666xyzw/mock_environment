@@ -1,0 +1,20 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Removing Custom rsyslog Configuration File
+      shell: "rm /etc/rsyslog.d/auth-errors.conf"
+      ignore_errors: true
+
+    - name: Restarting rsyslod Service
+      shell: "systemctl restart rsyslog"
+
+    - name: Removing Custom Log File
+      shell: "rm /var/log/auth-errors"
+      ignore_errors: true
+
+    - name: Resetting Time Zone
+      shell: "timedatectl set-timezone America/New_York"

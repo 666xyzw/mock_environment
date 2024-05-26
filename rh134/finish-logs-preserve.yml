@@ -1,0 +1,21 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: reconfiguring journald
+      lineinfile:
+        path: /etc/systemd/journald.conf
+        regexp: "Storage=persistent"
+        line: "#Storage=auto"
+        state: present
+
+    - name: Restarting journald Service
+      shell: "systemctl restart systemd-journald.service"
+
+    - name: Cleaning system
+      file:
+        path: "/var/log/journal"
+        state: absent

@@ -1,0 +1,43 @@
+---
+
+- hosts: localhost
+  become: true
+
+  tasks:
+
+    - name: Remove MariaDB
+      shell: "dnf remove -y mariadb"
+      ignore_errors: true
+
+- hosts: servera
+  become: false
+
+  tasks:
+
+    - name: Stopping All Containers
+      shell: "podman stop -a"
+      ignore_errors: true
+
+    - name: Removing Images
+      shell: "podman rmi -a -f"
+      ignore_errors: true
+
+    - name: Removing Containers
+      shell: "podman rm -a -f"
+
+    - name: Removing Podman Networks
+      shell: "podman network rm -f frontend backend"
+      ignore_errors: true
+
+    - name: Removing Podman
+      shell: "dnf remove -y container-tools"
+      ignore_errors: true
+      become: true
+
+    - name: Resetting Firewall
+      shell: "firewall-cmd --remove-port=13306/tcp --permanent && firewall-cmd --reload"
+      become: true
+    
+    - name: Cleaning HOME Folder
+      shell: "rm -rf ./databases"
+

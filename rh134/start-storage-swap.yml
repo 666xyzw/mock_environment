@@ -1,0 +1,12 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Creating Partition
+      shell: "parted -s /dev/sdb mklabel gpt mkpart data 2048s 1001M"
+
+    - name: Creating Backup of /etc/fstab
+      shell: "cp /etc/fstab /etc/fstab.bck"

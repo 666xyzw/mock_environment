@@ -1,0 +1,55 @@
+---
+
+- hosts: serverb
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Cleanup Remote Machine
+      loop:
+        - /configsync
+        - /root/configfile-backup-servera.tar.gz
+      file:
+        path: "{{ item }}"
+        state: absent
+
+    - name: Resettings SSH Acces
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regex: "PermitRootLogin yes"
+        line: "#PermitRootLogin prohibit-password"
+        state: present
+
+    - name: Removing rsync
+      shell: "dnf remove -y rsync"
+
+- hosts: servera
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Resettings SSH Acces
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regex: "PermitRootLogin yes"
+        line: "#PermitRootLogin prohibit-password"
+        state: present
+
+    - name: Removing rsync
+      shell: "dnf remove -y rsync"
+          
+- hosts: localhost
+  become: false
+  gather_facts: false
+
+  tasks:
+    - name: Cleanup Local Machine
+      loop:
+        - /home/student/configfile-backup-servera.tar.gz
+        - /tmp/savedconfig
+      file:
+        path: "{{ item }}"
+        state: absent
+

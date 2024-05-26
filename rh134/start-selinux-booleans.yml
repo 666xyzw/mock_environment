@@ -1,0 +1,14 @@
+---
+
+- hosts: servera
+  become: true
+  become_method: sudo
+  become_user: root
+
+
+  tasks:
+    - name: Install Apache
+      shell: "dnf install httpd -y"
+
+    - name: Configuring Filrewall
+      shell: "firewall-cmd --add-service=http --permanent && firewall-cmd --reload"

@@ -1,0 +1,64 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Unmounting Shares
+      shell: "umount -lf /remote"
+      ignore_errors: true
+
+    - name: Stopping Autofs Service
+      shell: "systemctl disable --now autofs"
+      ignore_errors: true
+
+    - name: Removing Extra Packages from System
+      shell: "dnf remove autofs nfs-utils -y"
+      ignore_errors: true
+
+    - name: Cleaning System
+      loop:
+        - "/remote"
+        - "/etc/auto.master.d"
+        - "/etc/auto.shares"
+      file:
+        path: "{{ item }}"
+        state: absent
+
+    - name: Removing Users
+      shell: "userdel -r contractor1 && userdel -r consultant1 && userdel -r dbuser1 && userdel -r sysadmin1 && userdel -r manager1 && userdel -r manager2"
+      ignore_errors: true
+  
+    - name: Removing groups
+      shell: "groupdel operators && groupdel production && groupdel managers"
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Stopping NFS Server
+      shell: "systemctl disable --now nfs-server"
+      ignore_errors: true
+
+    - name: Removing NFS Service
+      shell: "dnf remove nfs-utils -y"
+      ignore_errors: true
+
+    - name: Cleaning the Export File
+      shell: "echo > /etc/exports"
+
+    - name: Cleaning Up System
+      shell: "rm -Rf /shares"
+      ignore_errors: true
+
+    - name: Reconfiguring Firewall
+      shell: "firewall-cmd --remove-service=nfs --permanent && firewall-cmd --reload"
+
+    - name: Removing Users
+      shell: "userdel -r contractor1 && userdel -r consultant1 && userdel -r dbuser1 && userdel -r sysadmin1 && userdel -r manager1 && userdel -r manager2"
+      ignore_errors: true
+  
+    - name: Removing groups
+      shell: "groupdel operators && groupdel production && groupdel managers"

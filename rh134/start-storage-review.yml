@@ -1,0 +1,13 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Creating Backup of /etc/fstab
+      shell: "cp /etc/fstab /etc/fstab.bck"
+
+    - name: Making Sure the Disks are Empty
+      shell: "dd if=/dev/zero of=/dev/sdb bs=1M count=5120"
+      ignore_errors: true

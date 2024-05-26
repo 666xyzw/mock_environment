@@ -1,0 +1,29 @@
+---
+
+- hosts: localhost
+  become: false
+
+  tasks:
+
+    - name: Cleaning Up
+      loop:
+        - /home/student/bin
+        - /home/student/output-servera
+        - /home/student/output-serverb
+      file:
+        path: "{{ item }}"
+        state: absent
+
+- hosts: servera
+  become: true
+
+  tasks:
+    - name: Reverting Environment
+      shell: "mv /etc/sudoers.bck /etc/sudoers"
+
+- hosts: serverb
+  become: true
+
+  tasks:
+    - name: Reverting Environment
+      shell: "mv /etc/sudoers.bck /etc/sudoers"

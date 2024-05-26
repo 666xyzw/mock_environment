@@ -1,0 +1,17 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Stop and remove Apache from the System
+      shell: "systemctl disable --now httpd && dnf remove httpd mod_ssl -y"
+      ignore_errors: true
+
+    - name: Reconfiguring Firewall
+      shell: "firewall-cmd --remove-service={http,https,cockpit}"
+      ignore_errors: true
+
+    - name: Stopping Cockpit Service
+      shell: "systemctl disable --now cockpit"

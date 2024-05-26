@@ -1,0 +1,71 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Installing Apache
+      dnf:
+        name: httpd
+        state: latest
+        update_cache: true
+
+    - name: Configuring Vhost
+      copy:
+        dest: /etc/httpd/conf.d/vhost.conf
+        owner: root
+        group: root
+        mode: 
+        content: |
+          Listen 1001
+
+          <VirtualHost *:1001>
+            ServerName serverb
+            
+            DocumentRoot "/var/www/html/vhost"
+
+            <Directory "/var/www/html/vhost">
+              Require all granted
+            </Directory>
+
+          </VirtualHost>
+
+          # - name: Modifying Apache Base Configuration
+          #lineinfile:
+          #path: /etc/httpd/conf/httpd.conf
+          #regexp: "Listen 80"
+          #line: "Listen 1001"
+          #state: present
+
+    - name: Creating Direcotry Structure
+      file:
+        path: /var/www/html/vhost
+        state: directory
+        owner: apache
+        group: apache
+        mode: 0755
+
+    - name: Creating Base Index File
+      copy:
+        dest: /var/www/html/index.html
+        owner: apache
+        group: apache
+        mode: 0644
+        content: |
+          "SERVER B"
+
+    - name: Creating VHost Index File
+      copy:
+        dest: /var/www/html/vhost/index.html
+        owner: apache
+        group: apache
+        mode: 0644
+        content: |
+          "VHOST 1"
+
+    - name: Setting correct SELinux Permissions
+      shell: "restorecon -Rv /etc/httpd/conf.d && restorecon -Rv /var/www/html"
+
+    - name: Configuring Firewall
+      shell: "firewall-cmd --add-service=http --permanent && firewall-cmd --reload"

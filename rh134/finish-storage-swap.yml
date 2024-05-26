@@ -1,0 +1,25 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+  
+    - name: Disabling SWAP Partition
+      shell: "swapoff /dev/sdb2"
+      ignore_errors: true
+
+    - name: Unmounting Partitions
+      shell: "umount -lf /dev/sdb1 && umount -lf /dev/sdb2"
+      ignore_errors: true
+
+    - name: Deleting Partitions
+      shell: "parted /dev/sdb rm 1 && parted /dev/sdb rm 2 && udevadm settle"
+      ignore_errors: true
+
+    - name: Destroying Disk Metadata
+      shell: "dd if=/dev/zero of=/dev/sdb bs=1M count=5120"
+      ignore_errors: true
+
+    - name: Restoring fstab File
+      shell: "mv /etc/fstab.bck /etc/fstab" 

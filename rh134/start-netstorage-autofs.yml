@@ -1,0 +1,111 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+  
+    - name: Install NFS Server
+      dnf:
+        name: nfs-utils
+        state: latest
+        update_cache: true
+
+    - name: Creating Groups
+      shell: "groupadd -g 1002 operators && groupadd -g 1003 contractors"
+      ignore_errors: true
+
+    - name: Creating Users
+      shell: "useradd -G operators operator1 && useradd -G operators operator2 && useradd -G contractors contractor1 && useradd -G contractors contractor2"
+      ignore_errors: true
+  
+    - name: Creating Direct Base Share
+      file:
+        path: /shares/direct/external
+        state: directory
+        owner: root
+        group: contractors
+        mode: 0770
+        
+    - name: Creating Indirect Base Share
+      loop:
+        - /shares/indirect/
+        - /shares/indirect/west
+        - /shares/indirect/central
+        - /shares/indirect/east
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: operators
+        mode: 0770
+
+    - name: Setting Folder Permissions
+      shell: "chmod -R 2770 /shares/indirect /shares/direct"
+
+    - name: Creating External File
+      file:
+        path: "/shares/direct/external/README.txt"
+        state: touch
+        owner: root
+        group: contractors
+        mode: 0644
+    - name: Creating Internal Files
+      loop:
+        - /shares/indirect/west/README.txt
+        - /shares/indirect/east/README.txt
+        - /shares/indirect/central/README.txt
+      file:
+        path: "{{ item }}"
+        state: touch
+        owner: root
+        group: operators
+        mode: 0644
+
+    - name: Populating External File
+      copy:
+        dest: "/shares/direct/external/README.txt"
+        owner: root
+        group: contractors
+        mode: 0644
+        content: |
+          ###External Folder###
+    
+    - name: Populating Internal Files
+      shell: "echo \"###West Folder###\" > /shares/indirect/west/README.txt; echo \"###East Folder###\" > /shares/indirect/east/README.txt; echo \"###Central Folder###\" > /shares/indirect/central/README.txt "
+
+    - name: Populating the /etc/exports File
+      shell: "echo \"/shares/direct servera(rw,no_root_squash)\" > /etc/exports && echo \"/shares/indirect servera(rw,no_root_squash)\" >> /etc/exports" 
+
+    - name: Starting NFS Server
+      shell: "systemctl enable --now nfs-server && systemctl enable --now rpcbind.service"
+
+    - name: Configuring Firewall
+      shell: "firewall-cmd --add-service=nfs --permanent && firewall-cmd --reload"
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Creating Groups
+      shell: "groupadd -g 1002 operators && groupadd -g 1003 contractors"
+      ignore_errors: true
+
+    - name: Creating Users
+      shell: "useradd -G operators operator1 && useradd -G operators operator2 && useradd -G contractors contractor1 && useradd -G contractors contractor2"
+      ignore_errors: true
+
+    - name: Creating Mount Points
+      loop:
+        - /external
+        - /internal
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+  
+    - name: Installing nfs-utils
+      shell: "dnf install -y nfs-utils"

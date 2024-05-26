@@ -1,0 +1,15 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Clean Up Home Directory
+      shell: "rm -rf /home/student/{script.py,.config/containers,python39}"
+
+    - name: Cleaning Up Images
+      shell: "podman stop -a; podman rm -af; podman rmi -af"
+
+    - name: Removing container-tools
+      shell: "dnf remove -y container-tools"

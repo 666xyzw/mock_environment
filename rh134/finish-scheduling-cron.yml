@@ -1,0 +1,11 @@
+---
+
+- hosts: servera
+  become: false
+
+  tasks:
+
+    - name: Deleting file
+      file:
+        path: /home/student/my_first_cron_job.txt
+        state: absent

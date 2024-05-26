@@ -1,0 +1,22 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Removing Extra Packages
+      shell: "dnf remove httpd pykickstart -y"
+
+    - name: Deleting Folders
+      loop:
+        - /var/www/html/ks-config
+        - /home/student/kickstart.cfg
+      file:
+        path: "{{ item }}"
+        state: absent
+      ignore_errors: true
+
+    - name: Resetting Firewall
+      shell: "firewall-cmd --remove-port=80/tcp --permanent && firewall-cmd --reload"
+      ignore_errors: true

@@ -1,0 +1,10 @@
+---
+
+- hosts: servera
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Revert tuned Profile
+      shell: "tuned-adm profile virtual-guest"

@@ -1,0 +1,15 @@
+---
+
+- hosts: servera
+  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+    - name: Installing Apache
+      dnf:
+        name: httpd
+        state: latest
+
+    - name: Configure Firewalld
+      shell: "firewall-cmd --add-service=http --permanent && firewall-cmd --reload"

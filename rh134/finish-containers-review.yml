@@ -1,0 +1,41 @@
+---
+
+
+- hosts: localhost
+  become: false
+
+  tasks:
+    - name: Stopping DB Service
+      shell: "ssh podsvc@serverb \"systemctl --user disable --now container-inventorydb.service\""
+      ignore_errors: true
+
+    - name: Stopping & Removing Containers
+      shell: "ssh podsvc@serverb \"podman stop -a && podman rm -a -f\""
+      ignore_errors: true
+
+    - name: Deleting Container Image
+      shell: "ssh podsvc@serverb \"podman rmi -a -f\""
+      ignore_errors: true
+
+    - name: Restoring Linger for podsvc
+      shell: "ssh podsvc@serverb \"loginctl disable-linger\" "
+
+- hosts: serverb
+  become: true
+   
+  tasks:
+    
+    - name: Restoring sudoers File
+      shell: "mv /etc/sudoers.bck /etc/sudoers"
+      ignore_errors: true
+
+    - name: Removing podman and MariaDB from System
+      shell: "dnf remove -y container-tools "
+      ignore_errors: true
+
+    - name: Removing Dummy User
+      shell: "pkill -u podsvc; sleep 15s; userdel -r podsvc"
+      ignore_errors: true
+
+    - name: Cleaning /tmp Folder
+      shell: "rm -rf /tmp/registries.conf"

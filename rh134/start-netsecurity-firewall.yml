@@ -1,0 +1,15 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Installing Cockpit Service
+      shell: "dnf install cockpit -y"
+
+    - name: Configuring Firewall
+      shell: "firewall-cmd --add-service=cockpit --permanent && firewall-cmd --reload"
+
+    - name: Starting cockpit
+      shell: "systemctl enable --now cockpit"

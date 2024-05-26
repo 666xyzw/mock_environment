@@ -1,0 +1,17 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+    - name: Cleanup
+      loop:
+        - /etc/rsyslog.d/debug.conf
+        - /var/log/messages-debug
+
+      file:
+        path: "{{ item }}"
+        state: absent
+
+    - name: Restart rsyslog
+      shell: "systemctl restart rsyslog"

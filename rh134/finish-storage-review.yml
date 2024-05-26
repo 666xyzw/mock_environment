@@ -1,0 +1,33 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Unmounting the Disk
+      shell: "umount -lf /backup"
+      ignore_errors: true
+
+    - name: Stopping SWAP Disks
+      shell: "swapoff -a"
+      ignore_errors: true
+
+    - name: Deleting Created Partitions
+      shell: "parted /dev/sdb rm 1 && parted /dev/sdb rm 2 && parted /dev/sdb rm 3 && udevadm settle"
+      ignore_errors: true
+
+    - name: Removing /backup Folder
+      shell: "rmdir /backup"
+      ignore_errors: true
+
+    - name: Zeroing Disk
+      shell: "dd if=/dev/zero of=/dev/sdb bs=1M count=5120"
+      ignore_errors: true
+
+    - name: Reverting /etc/fstab File
+      shell: "mv -f /etc/fstab.bck /etc/fstab"
+      ignore_errors: true
+
+    - name: Reloading System daemon
+      shell: "systemctl daemon-reload"

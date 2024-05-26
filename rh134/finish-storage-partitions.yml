@@ -1,0 +1,28 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Unmounting Partition
+      shell: "umount -lf /archive"
+      ignore_errors: true
+
+    - name: Reseting fstab File
+      lineinfile:
+        path: "/etc/fstab"
+        regexp: "/archive"
+        line: " "
+        state: present
+    - name: Deleting /archive Folder
+      shell: "rmdir /archive"
+      ignore_errors: true
+
+    - name: Destroying Partitions
+      shell: "parted /dev/sdb rm 1 && udevadm settle"
+      ignore_errors: true 
+
+    - name: Zeroing Disk
+      shell: "dd if=/dev/zero of=/dev/sdb bs=1M count=5120"
+      ignore_errors: true

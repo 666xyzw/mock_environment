@@ -1,0 +1,14 @@
+---
+
+- hosts: localhost
+  become: false
+
+  tasks:
+
+    - name: Cleaning Up HOME Directory
+      loop:
+        - /home/student/bin/printhostname.sh
+        - /home/student/bin
+      file:
+        path: "{{ item }}"
+        state: absent

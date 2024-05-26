@@ -1,0 +1,34 @@
+---
+
+- hosts: serverb
+  become: true
+  become_user: root
+
+
+  tasks:
+    - name: Update Cache
+      dnf:
+        update_cache: true
+
+    - name: Installing tuned.service
+      dnf:
+        name: tuned
+        state: latest
+    
+    - name: Enabling tuned
+      shell: systemctl enable --now tuned
+
+    # starts the process in the background and does not wait for a response
+    - name: Initializing First Proccesses
+      shell: "sha1sum /dev/zero &"
+      async: true
+      poll: 0
+
+    # starts the process in the background and does not wait for a response
+    - name: Initializing Second Process
+      shell: "md5sum /dev/zero &"
+      async: true
+      poll: 0
+
+    - name: Setting Nice Level for the Processes
+      shell: "renice -n 2 $(pgrep sha1sum) && renice -n -2 $(pgrep md5sum)"

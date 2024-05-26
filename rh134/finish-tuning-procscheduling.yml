@@ -1,0 +1,10 @@
+---
+
+- hosts: servera
+  become: false
+
+  tasks:
+
+    - name: Terminating Processes
+      shell: "pkill sha1sum"
+      ignore_errors: true

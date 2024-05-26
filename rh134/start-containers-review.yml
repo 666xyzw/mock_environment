@@ -1,0 +1,80 @@
+--- 
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Creating User
+      shell: "useradd podsvc -p '$6$pu8fTwecL3oUFTvQ$aS4387CLbRvrbgoYHz8Btb8XdnyslVfinwdbMHYi1pQ3OimvDu68Ihnn/G/wGQ.cOd3zIxMegwOMDO33arRAo/'"
+      ignore_errors: true
+  
+    - name: Configuring User Rights
+      shell: "cp /etc/sudoers /etc/sudoers.bck && echo \"podsvc ALL=(ALL) NOPASSWD:ALL\" >> /etc/sudoers && echo \"alias loginctl='sudo loginctl'\" >> /home/podsvc/.bashrc "
+    
+    - name: Installing MariaDB
+      shell: "dnf install -y mariadb"
+
+    - name: Creating Registry File
+      file:
+        path: /tmp/registries.conf
+        state: touch
+        owner: podsvc
+        group: podsvc
+        mode: 0644
+
+    - name: Creating Local Script Folder
+      file:
+        path: "/home/podsvc/containers-review"
+        owner: podsvc
+        group: podsvc
+        mode: 0755
+        state: directory
+
+    - name: Creating Database Connection Check Script
+      file:
+        path: "/home/podsvc/containers-review/testdb.sh"
+        state: touch
+        owner: podsvc
+        group: podsvc
+        mode: 0744
+
+    - name: Populating Script File
+      copy:
+        dest: "/home/podsvc/containers-review/testdb.sh"
+        owner: podsvc
+        group: podsvc
+        content: |
+          #!/usr/bin/bash
+          
+          echo "Testing the access to the database..."
+          sleep 2
+
+          SQL_TEST=$(mariadb --user operator1 --password='redhat' -e 'use inventory' --host 0.0.0.0 --port 13306)
+
+          if [ $? -eq 0 ];
+          then
+            echo "SUCCESS"
+          fi
+
+    - name: Populating registry File
+      copy:
+        dest: "/tmp/registries.conf"
+        owner: podsvc
+        group: podsvc
+        mode: 0644
+        content: |
+          qualified-registries = ['docker.io']
+
+          [[registry]]
+          location = "docker.io"
+          insecure = false
+          blocked = false
+
+- hosts: localhost
+  become: false
+
+  tasks:
+
+    - name: Configuring SSH
+      shell: "ssh-copy-id -i /home/student/.ssh/ansible.pub podsvc@serverb"

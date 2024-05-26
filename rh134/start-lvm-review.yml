@@ -1,0 +1,50 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Creating Mount Points
+      file:
+        path: /storage/data1
+        state: directory
+
+    - name: Creating Partitions
+      shell: "parted /dev/sdb mklabel gpt && parted /dev/sdb mkpart primary 1M 513M && parted /dev/sdb set 1 lvm on  && udevadm settle"
+      ignore_errors: true
+
+    - name: Adding /dev/sdb1 to PV
+      shell: "pvcreate /dev/sdb1"
+      ignore_errors: true
+
+    - name: Creating serverb_01_vg Volume Group
+      shell: "vgcreate serverb_01_vg /dev/sdb1"
+      ignore_errors: true
+
+    - name: Creating serverb_01_lv Logical Volume
+      shell: "lvcreate -n serverb_01_lv -L 256M serverb_01_vg"
+      ignore_errors: true
+
+    - name: Formating serverb_01_lv to XFS
+      shell: "mkfs.xfs /dev/serverb_01_vg/serverb_01_lv"
+      ignore_errors: true
+
+    - name: Creating Backup of /etc/fstab File
+      shell: "cp /etc/fstab /etc/fstab.bck"
+      ignore_errors: true
+
+    - name: Addig serverb_01_lv to fstab File
+      shell: "echo \"/dev/serverb_01_vg/serverb_01_lv /storage/data1  xfs defaults  0 0\" >> /etc/fstab "
+      ignore_errors: true
+
+    - name: Reloading System Daemon
+      shell: "systemctl daemon-reload"
+      ignore_errors: true
+
+    - name: Mounting LVM to /storage/data1
+      shell: "mount /storage/data1"
+      ignore_errors: true
+
+    - name: Creating Dummy File on /storage/data1
+      shell: "dd if=/dev/urandom of=/storage/data1/file1 bs=1M count=150"

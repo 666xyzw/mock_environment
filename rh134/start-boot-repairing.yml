@@ -1,0 +1,16 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Creating Backup of /etc/fstab File
+      shell: "cp /etc/fstab /etc/fstab.bck"
+
+    - name: Configuring Environment
+      shell: "echo \"/dev/sdz1  /RemoveMe xfs  defaults  0 0\" >> /etc/fstab && systemctl daemon-reload"
+
+    - name: Restarting servera Machine
+      shell: "init 6"
+      ignore_errors: true

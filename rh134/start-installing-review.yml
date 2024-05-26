@@ -1,0 +1,26 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Installing Extra Packages 
+      dnf:
+        name: httpd,pykickstart
+        state: latest
+        update_cache: true
+
+    - name: Creating Additional Folder
+      file:
+        path: "/var/www/html/ks-config"
+        state: directory
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Starting Apache
+      shell: "systemctl enable --now httpd"
+
+    - name: Configuring Firewall
+      shell: "firewall-cmd --add-port=80/tcp --permanent && firewall-cmd --reload"

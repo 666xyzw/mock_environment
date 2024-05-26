@@ -1,0 +1,16 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Remove mkpasswd from System
+      shell: "dnf remove mkpasswd -y"
+
+    - name: Resetting Default Target
+      shell: "systemctl set-default multi-user.target"
+
+    - name: Resetting /etc/fstab File
+      shell: "mv /etc/fstab.bck /etc/fstab"
+

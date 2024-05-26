@@ -1,0 +1,45 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Cleanup /data
+      shell: "rm -rf /data/*"
+
+    - name: Unmounting LVM
+      shell: "umount -lf /data"
+      ignore_errors: true
+
+    - name: Deleting /data
+      shell: "rmdir /data"
+      ignore_errors: true
+
+    - name: Deleting LVM
+      shell: "lvremove -f /dev/servera_group/servera_volume"
+      ignore_errors: true
+
+    - name: Deleting VG
+      shell: "vgremove -f servera_group"
+      ignore_errors: true
+
+    - name: Deleting PVs
+      shell: "pvremove -f /dev/sdb1 /dev/sdb2 /dev/sdb3"
+      ignore_errors: true
+
+    - name: Deleting Partitions
+      shell: "parted /dev/sdb rm 1 rm 2 rm 3 && udevadm settle"
+      ignore_errors: true
+  
+    - name: Zeroing Disk
+      shell: "dd if=/dev/zero of=/dev/sdb bs=1M count=5120"
+      ignore_errors: true
+
+    - name: Restoring /etc/fstab File
+      lineinfile:
+        path: "/etc/fstab"
+        regexp: "^UUID=(.*)\t/data(.*)"
+        line: " "
+        state: present
+      ignore_errors: true

@@ -1,0 +1,48 @@
+---
+
+
+- hosts: servera
+  become: false
+
+  tasks:
+
+    - name: Creating python39 Directory
+      file:
+        path: "/home/student/python39"
+        state: directory
+        owner: student
+        group: student
+        mode: 0755
+
+    - name: Creating Containerfile
+      copy:
+        dest: "/home/student/python39/Containerfile"
+        owner: student
+        group: student
+        mode: 0644
+        content: |
+         FROM docker.io/redhat/ubi9
+         RUN dnf install -y python3
+         CMD ["/bin/bash", "-c", "sleep infinity"] 
+
+    - name: Creating Python Script
+      copy:
+        dest: "/home/student/script.py"
+        owner: student
+        group: student
+        mode: 0644
+        content: |
+
+          #!/usr/bin/python3
+
+          import sys
+
+          version = sys.version_info
+
+          if (version[0] == 3 and version[1] == 9):
+            print("This script was not run on the correct version of Python")
+            print("Expected version of Python is 3.8")
+            print("Current version of python is ", str(version[0]) + "." + str(version[1]))
+
+          else:
+            print("This script was correctly run on Python 3.8")

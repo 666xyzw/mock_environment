@@ -1,0 +1,37 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Innstalling podman
+      shell: "dnf install -y container-tools"
+      ignore_errors: true
+
+    - name: Creating Directory
+      file:
+        path: /tmp/containers-services
+        state: directory
+        owner: 1001
+        group: 1001
+        mode: 0755
+
+    - name: Creating Registry File
+      file:
+        path: "/tmp/containers-services/registries.conf"
+        state: touch
+        owner: 1001
+        group: 1001
+        mode: 0644
+
+    - name: Poppulating Registries Configuration File
+      copy:
+        dest: "/tmp/containers-services/registries.conf"
+        content: |
+          qualified-registries = ["docker.io"]
+
+          [[registry]]
+          location = "docker.io"
+          insecure = false
+          blocked = false

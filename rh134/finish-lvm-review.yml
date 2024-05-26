@@ -1,0 +1,35 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Unmounting LVMs
+      shell: "umount -lf /storage/data1 && umount -lf /storage/data2"
+      ignore_errors: true
+
+    - name: Restoring fstab File
+      shell: "mv /etc/fstab.bck /etc/fstab"
+      ignore_errors: true
+
+    - name: Reloading System Daemon
+      shell: "systemctl daemon-reload"
+   
+    - name: Removing LVMs
+      shell: "lvremove -f /dev/serverb_01_vg/serverb_01_lv /dev/serverb_01_vg/serverb_02_lv"
+      
+    - name: Removing Volume Groups
+      shell: "vgremove -f serverb_01_vg"
+   
+    - name: Removing Partitions from PVs
+      shell: "pvremove -f /dev/sdb1 /dev/sdb2"
+
+    - name: Destroying Partitions
+      shell: "parted /dev/sdb rm 1 && parted /dev/sdb rm 2 && udevadm settle"
+   
+    - name: Removing Mount Points
+      shell: "rm -rf /storage"
+
+    - name: Zeroing /dev/sdb
+      shell: "dd if=/dev/zero of=/dev/sdb bs=1M count=5120"

@@ -1,0 +1,16 @@
+---
+
+- hosts: servera
+  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+    
+    - name: Cleanup!
+      loop:
+        - /backuptest
+        - /tmp/etc.tar.gz
+      file:
+        path: "{{ item }}"
+        state: absent

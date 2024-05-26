@@ -1,0 +1,15 @@
+---
+
+- hosts: servera
+  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+    - name: Stopping Service
+      shell: systemctl disable --now postfix
+
+    - name: Remove Postfix
+      dnf:
+        name: postfix
+        state: absent
