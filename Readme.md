@@ -131,7 +131,7 @@ Pentru instalarea de Ansible pe **workstation** trebuie sa rulati urmatoarele co
 
     [root@workstation ~]# dnf install ansible
 
-## Consiguration Files <a name="config"></a>
+## Configuration Files <a name="config"></a>
 Ca si configuratie, in primul rand trebuie populat fisierul "/etc/hosts" cu numele si IP-ul masinilor, ex.:
 
     [student@workstation ~]$ cat /etc/hosts
