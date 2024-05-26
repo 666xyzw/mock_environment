@@ -1,0 +1,16 @@
+---
+
+- hosts: serverb
+  become: true
+
+  tasks:
+
+    - name: Removing "lab" Connection
+      shell: "nmcli con del lab"
+
+    - name: Removing Private IP Address
+      lineinfile:
+        path: "/etc/hosts"
+        regexp: "10.0.1.1\tprivate"
+        line: " "
+        state: present

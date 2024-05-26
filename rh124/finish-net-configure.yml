@@ -1,0 +1,13 @@
+---
+
+- hosts: servera
+  become: true
+  gather_facts: false
+
+  tasks:
+
+    - name: Disabling static-adr Connection
+      shell: "nmcli con down static-addr; nmcli con del static-addr"
+
+    - name: Re-activating "Wired connection 1" Connection
+      shell: "nmcli con mod \"Wired connection 1\" connection.autoconnect yes && nmcli con up \"Wired connection 1\""

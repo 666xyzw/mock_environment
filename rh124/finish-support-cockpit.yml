@@ -1,0 +1,25 @@
+---
+
+- hosts: servera
+  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+
+    - name: Remove Cockpit
+      dnf:
+        name: cockpit
+        state: absent
+
+    - name: Remove Cockpit from Firewalld
+      ansible.posix.firewalld:
+        state: disabled
+        zone: public
+        service: cockpit
+      register: result
+
+    - name: Validate Firewall Rule
+      assert:
+        that:
+          - result.changed == true

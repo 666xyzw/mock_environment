@@ -1,0 +1,15 @@
+---
+
+- hosts: localhost
+  connection: local
+  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+
+    - name: Reset User Password
+      user:
+        name: student
+        password: $6$ikSJAjAV/e3CvpNv$nSMk2IqGBDJYZh4CF6Vhhc92vKk2KDcwj8a2uZNs1stKJdC0oo5g3atSkfBuhSZowhqubiksMmO.cNDK0DYr2/
+        update_password: always

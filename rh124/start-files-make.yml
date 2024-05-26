@@ -1,0 +1,8 @@
+---
+
+- hosts: servera
+
+  tasks:
+
+    - name: Create Files on home dir
+      shell: mkdir files && touch files/target.file

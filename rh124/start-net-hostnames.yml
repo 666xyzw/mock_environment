@@ -1,0 +1,12 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Installing bind-utils
+      shell: "dnf install -y bind-utils"
+
+    - name: Setting Transient Hostname
+      shell: "hostname testa"

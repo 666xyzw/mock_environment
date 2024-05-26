@@ -1,0 +1,30 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Removing Extra IP Address
+      shell: "nmcli con mod \"Wired connection 1\" -ipv4.address 10.0.1.1/24"
+
+    - name: Dizactivating "Wired connection 1"
+      shell: "nmcli con down \"Wired connection 1\""
+
+    - name: Removing connection
+      shell: "nmcli con del \"Wired connection 1\""
+
+
+- hosts: serverb
+  become: true
+
+  tasks:
+ 
+    - name: Removing Extra IP Address
+      shell: "nmcli con mod \"Wired connection 1\" -ipv4.address 10.0.1.2/24"
+
+    - name: Dizactivating "Wired connection 1"
+      shell: "nmcli con down \"Wired connection 1\""
+
+    - name: Removing connection
+      shell: "nmcli con del \"Wired connection 1\""   

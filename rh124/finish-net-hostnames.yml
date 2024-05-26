@@ -1,0 +1,13 @@
+---
+
+- hosts: servera
+  become: true
+
+  tasks:
+
+    - name: Removing Extra Packages
+      shell: "dnf remove -y bind-utils"
+      ignore_errors: true
+
+    - name: Resetting /etc/hosts File
+      shell: sed -i -E 's/.*classroom\.example\.com.*//' /etc/hosts

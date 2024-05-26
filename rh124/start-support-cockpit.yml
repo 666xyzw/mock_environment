@@ -1,0 +1,33 @@
+---
+
+- name: Cockpit Setup
+  hosts: servera
+  become: true
+  become_user: root
+  become_method: sudo
+
+  tasks:
+   
+    - name: Update cache
+      dnf:
+        update_cache: true
+
+    - name: Install cockpit
+      dnf:
+        name: cockpit
+        state: latest
+
+    - name: Start Cockpit Service
+      shell: systemctl enable --now cockpit
+
+    - name: Enable Cockpit on Firewalld
+      ansible.posix.firewalld:
+        state: enabled
+        zone: public
+        service: cockpit
+      register: result
+
+    - name: Validate Firewall rule addition
+      assert:
+        that:
+          - result.changed == true

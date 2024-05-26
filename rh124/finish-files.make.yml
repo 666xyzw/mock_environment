@@ -1,0 +1,8 @@
+---
+
+- hosts: servera
+
+  tasks:
+
+    - name: Remove Files from home dir
+      shell: rm files/target.file && rmdir files
