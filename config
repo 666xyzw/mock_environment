@@ -1,0 +1,11 @@
+Host servera
+        Hostname servera
+        User student
+        Port 22
+        IdentityFile ~/.ssh/ansible
+
+Host serverb
+        Hostname serverb
+        User student
+        Port 22
+        IdentityFile ~/.ssh/ansible
