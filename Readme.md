@@ -1,136 +1,96 @@
-# EX200-Stuff
+# EX200 Mock Environment
 
-# Cuprins
-1. [Structura](#structura)
+# Table of Content
+1. [Structure](#structure)
 2. [Setup](#setup)
-3. [Connectivitate](#connectivitate)
-4. [Instalare Ansible](#ansible_install)
-5. [Fisiere de configuratie](#config)
-6. [Scripturi](#scripts)
+3. [Connectivity](#connectivity)
+4. [Installing Ansible](#ansible_install)
+5. [Configuration Files](#config)
+6. [Scripts](#scripts)
 
-## Structura <a name="structura"></a>
+## Structura <a name="structure"></a>
 
-Scripturile de ansible sunt impartine pe baza celor daua carti, adica: tot ce apartine de prima carte (rh124) se gaseste in folderul rh124; tot ce apartine de a doua carte (rh134) se gasete in folderul rh134.
+The ansible scripts are separated in two categories, based on the books, so everything that belongs to the first book (rh124) it is put into the rh124 folder; everything that belongs to the second book (rh134) you will get it in the rh134 folder.
 
 ## Setup <a name="setup"></a>
 
-Setup-ul este setat in felul in care sa simuleze cat mai bine laboratoarele de RHEL.
+The setup is made in such way, that it tries to simulate the lab environment as close as possible
 
-Ca si masini, o sa aveti nevoie de 5 VM-uri:
+As for VM-s you will need 5 machines:
     
 1. **workstation**
 
-    -> OS: OEL9/RHEL9
+    -> OS: RHEL9
 
     -> Server with GUI + System Tools + Security Tools
     
     -> Disks:\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - macar de 20GB, pentru OS\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - de 5GB pentru exercitii/lab-uri\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - de 5GB pentru exercitii/lab-uri
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB, for OS\
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - 5GB for labs/exercises\
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - 5GB for labs/exercises
 
-    -> Network: pe acelasi sub-net ca si restul masinilor
+    -> Network:
+       1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines
+       2) NIC - for networking exercises/labs
 
-2. **servera**
+3. **servera**
 
-    -> OS: OEL9/RHEL9
+    -> OS: RHEL9
 
     -> minial install + System Tools + Security Tools
     
     -> Disks:\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - macar de 20GB, pentru OS\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - de 5GB pentru exercitii/lab-uri\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - de 5GB pentru exercitii/lab-uri
-    
-    -> Network: pe acelasi sub-net ca si restul masinilor
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB, for OS\
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - 5GB for labs/exercises\
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - 5GB for labs/exercises
 
-3. **serverb**
+    -> Network:
+       1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines
+       2) NIC - for networking exercises/labs
 
-    -> OS: OEL9/RHEL9
+4. **serverb**
+
+    -> OS: RHEL9
 
     -> minimal install + System Tools + Security Tools
 
     -> Disks:\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - macar de 20GB, pentru OS\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - de 5GB pentru exercitii/lab-uri\        
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - de 5GB pentru exercitii/lab-uri
-    
-    -> Network: pe acelasi sub-net ca si restul masinilor
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB, for OS\
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - 5GB for labs/exercises\
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - 5GB for labs/exercises
 
+    -> Network:
+       1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines
+       2) NIC - for networking exercises/labs
 
-4. **PXE**
+5. **PXE**
 
-    -> OS: OEL9/RHEL9
+    -> OS: RHEL9
 
     -> minimal install + System Tools
 
     -> Disks:\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - macar de 50GB, pentru OS\
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 50GB for OS\
     
-    -> Network: pe acelasi sub-net ca si restul masinilor
-    -> este necesar pentru laboratorul de Kickstart; aceasta masina va pune la dispozitie pachetele de *BaseOS* si *AppStream*
+    -> Network:
+       1) NIC - for SSH/internet connectivity/serving repo for the Demo machine - must be on the same subnet as the rest of the machines
+    -> it`s necessarry for the *Kickstart* lab
 
-5. **Demo**
+7. **Demo**
 
-    -> OS: OEL9/RHEL9
+    -> OS: RHEL9
 
     -> Disks:\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - de 20GB, pentru OS
-    
-    -> este necesar pentru laboratorul de Kickstart; aceasta masina se va instala singur prin fisierul de kickstart
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB for OS
 
+    -> it`s necessarry for the *Kickstart* lab; with this machine you can test if the kickstart file works as is should
 
-Aceste masini trebuie sa dispuna de user-ul standard **student**, cu parola *student* si user **root** cu parola *redhat*.
-
-*Daca va hotarati sa instalati masini de RHEL9, atunci o sa aveti nevoie de un cont RHEL Developer, cont gratis prin care se pot obtine ISO-urile de RHEL + subscriptia la repo-uri; Momentan RedHat da 16 licente gratis pe un cont de developer prin care aveti access la toate repo-urile lor; Daca aveti deja cont de RedHat, atunci contul de Developer trebuie doar activat prin logare in platforma cu credentialele de RedHat.*
 
 La instalarea acestor masini, din meniu, trebuie se selectati si optiunile de System Tools si Security Tools (aici trebuie instalat separat si *setroubleshoot* ca SELinux sa scrie erroriile si in */var/log/messages*), de ultima va fii nevoie pentru laboratoarele cu SELinux.
 
-In cazul in care o comanda nu functioneaza deoarece binarul nu se gaseste pe sistem, se ruleaza comanda:
-    
-    [root@workstation ~]$ dnf whatprovides binary_name
-
-Ex.:
-
-    [root@workstation ~]# dnf whatprovides semanage
-    Last metadata expiration check: 1:28:34 ago on Tue 06 Feb 2024 09:46:06 AM EET.
-    policycoreutils-python-utils-3.3-6.el9_0.noarch : SELinux policy core python utilities
-    Repo        : ol9_appstream
-    Matched from:
-    Filename    : /usr/sbin/semanage
-
-    policycoreutils-python-utils-3.4-4.el9.noarch : SELinux policy core python utilities
-    Repo        : ol9_appstream
-    Matched from:
-    Filename    : /usr/sbin/semanage
-
-    policycoreutils-python-utils-3.5-1.el9.noarch : SELinux policy core python utilities
-    Repo        : @System
-    Matched from:
-    Filename    : /usr/sbin/semanage
-
-    policycoreutils-python-utils-3.5-1.el9.noarch : SELinux policy core python utilities
-    Repo        : ol9_appstream
-    Matched from:
-    Filename    : /usr/sbin/semanage
-
-    policycoreutils-python-utils-3.5-2.el9.noarch : SELinux policy core python utilities
-    Repo        : ol9_appstream
-    Matched from:
-    Filename    : /usr/sbin/semanage
-
-    policycoreutils-python-utils-3.5-3.el9_3.noarch : SELinux policy core python utilities
-    Repo        : ol9_appstream
-    Matched from:
-    Filename    : /usr/sbin/semanage
-
-dupa care se instaleaza pachetul care este returnat de catre dnf
-
-    [root@workstation ~]# dnf install policycoreutils-python-utils-3.3-6.el9_0 -y
-
 Pentru simularea scripturilor de start/finish din laboratoarele din carti, este nevoie sa instalati Ansible pe **workstation**.
 
-## Connectivitate <a name="connectivitate"></a>
+## Connectivitate <a name="connectivity"></a>
 
 De la **workstation** catre celelalte doua masini connexiunea se face prin SSH; trebuie sa generati o cheie standard SSH, pentru user-ul **student**, care trebuie copiat pe restul masinilor (**servera**, **serverb**). Cheia generata trebuie sa se numeasca *ansible*.
 Aceasta cheie va fii folosit si de catre Ansible.
