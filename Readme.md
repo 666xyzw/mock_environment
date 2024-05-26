@@ -29,9 +29,9 @@ As for VM-s you will need 5 machines:
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - 5GB for labs/exercises\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - 5GB for labs/exercises
 
-    -> Network:
-       1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines
-       2) NIC - for networking exercises/labs
+    -> Network:\
+       &nbsp;&nbsp;&nbsp;&nbsp;1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
+       &nbsp;&nbsp;&nbsp;&nbsp;2) NIC - for networking exercises/labs
 
 3. **servera**
 
@@ -44,9 +44,9 @@ As for VM-s you will need 5 machines:
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - 5GB for labs/exercises\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - 5GB for labs/exercises
 
-    -> Network:
-       1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines
-       2) NIC - for networking exercises/labs
+    -> Network:\
+       &nbsp;&nbsp;&nbsp;&nbsp;1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
+       &nbsp;&nbsp;&nbsp;&nbsp;2) NIC - for networking exercises/labs
 
 4. **serverb**
 
@@ -59,9 +59,9 @@ As for VM-s you will need 5 machines:
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - 5GB for labs/exercises\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - 5GB for labs/exercises
 
-    -> Network:
-       1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines
-       2) NIC - for networking exercises/labs
+    -> Network:\
+       &nbsp;&nbsp;&nbsp;&nbsp;1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
+       &nbsp;&nbsp;&nbsp;&nbsp;2) NIC - for networking exercises/labs
 
 5. **PXE**
 
@@ -72,8 +72,8 @@ As for VM-s you will need 5 machines:
     -> Disks:\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 50GB for OS\
     
-    -> Network:
-       1) NIC - for SSH/internet connectivity/serving repo for the Demo machine - must be on the same subnet as the rest of the machines
+    -> Network:\
+       &nbsp;&nbsp;&nbsp;&nbsp;1) NIC - for SSH/internet connectivity/serving repo for the Demo machine - must be on the same subnet as the rest of the machines
     -> it`s necessarry for the *Kickstart* lab
 
 7. **Demo**
@@ -83,6 +83,9 @@ As for VM-s you will need 5 machines:
     -> Disks:\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB for OS
 
+    -> Network:\
+       &nbsp;&nbsp;&nbsp;&nbsp;1) NIC - has to be on the same subnet az the *PXE* machine, so it can run the kickstart file
+   
     -> it`s necessarry for the *Kickstart* lab; with this machine you can test if the kickstart file works as is should
 
 
