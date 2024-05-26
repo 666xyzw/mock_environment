@@ -70,7 +70,7 @@ As for VM-s you will need 5 machines:
     -> minimal install + System Tools
 
     -> Disks:\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 50GB for OS\
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 50GB for OS
     
     -> Network:\
        &nbsp;&nbsp;&nbsp;&nbsp;1) NIC - for SSH/internet connectivity/serving repo for the Demo machine - must be on the same subnet as the rest of the machines
