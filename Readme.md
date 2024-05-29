@@ -40,7 +40,7 @@ As for VM-s, you will need 5 machines:
 
     -> OS: RHEL9
 
-    -> minial install + System Tools + Security Tools
+    -> minimal install + System Tools + Security Tools
     
     -> Disks:\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB, for OS\
@@ -92,7 +92,7 @@ As for VM-s, you will need 5 machines:
     -> it`s necessarry for the *Kickstart* lab; with this machine you can test if the kickstart file works as is should
 
 
-When you install these machines, from the menu you have tol select the *System Tools* and *Security Tools* options.
+When you install these machines, from the menu you have to select the *System Tools* and *Security Tools* options.
 To run the ansbile scripts, you have to install Ansible on the **workstation** machine.
 
 ## Connectivity <a name="connectivity"></a>
