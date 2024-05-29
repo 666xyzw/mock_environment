@@ -13,7 +13,7 @@
 The ansible scripts are separated in two categories, based on the books, so everything that belongs to the first book (rh124) it is put into the rh124 folder; everything that belongs to the second book (rh134) you will get it in the rh134 folder.
 
 Usernames and passwords are exactly the same as in the books.
-For the VMs to work correctly you will need a RedHat Developer account; if you already have a RedHat account joust login on the RedHat Developer page, if not you will have to create an account. The Developer account will be needed to register your machines to the RedHat environment, so you can have access to the repositories.
+For the VMs to work correctly you will need a RedHat Developer account; if you already have a RedHat account just login on the RedHat Developer page, if not you will have to create an account. The Developer account will be needed to register your machines to the RedHat environment, for free, so you can have access to the repositories.
 
 ## Setup <a name="setup"></a>
 
