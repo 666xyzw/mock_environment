@@ -108,7 +108,7 @@ To generate an SSH key pair un the following command:
  - -f -> name of the file that will contain the key, and will be saved into *~/.ssh* folder 
  - -N -> the keys password; if **""** is specified (alais nothing) then, the key won`t be password protected
 
- Ca noua cheie sa fie folosite de catre SSH, tot in *~/.ssh/* trebuie creat un fisier numit **config** care sa contina urmatoarele date:
+To use the new key pair, if the file does not already exist, create a file under *~/.ssh/*, named **config** which contains the following lines:
 
     Host servera
             Hostname servera
@@ -122,18 +122,16 @@ To generate an SSH key pair un the following command:
             Port 22
             IdentityFile ~/.ssh/ansible
 
-Fisierul respectiv il gasiti si in repo, trebuie doar sa-o copiati in path-ul correct.
+The file can be found in this repo, you just need to copy it to the correct location
 
 ## Installing Ansible <a name="ansible_install"></a>
 
-Pentru instalarea de Ansible pe **workstation** trebuie sa rulati urmatoarele comenzi:
+To install Ansible on **workstation** run the below commands:
 
-    [root@workstation ~]# dnf install epel-release
-
-    [root@workstation ~]# dnf install ansible
+    [root@workstation ~]# dnf install epel-release -y && dnf install ansible -y
 
 ## Configuration Files <a name="config"></a>
-Ca si configuratie, in primul rand trebuie populat fisierul "/etc/hosts" cu numele si IP-ul masinilor, ex.:
+As for the configuration, first populate the */etc/hosts* files on all the machines with the IPs and hostnames
 
     [student@workstation ~]$ cat /etc/hosts
     127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
@@ -157,32 +155,25 @@ Ca si configuratie, in primul rand trebuie populat fisierul "/etc/hosts" cu nume
     192.168.56.123  servera
     192.168.56.128  serverb
 
-Acesta trebuie facut pe fiecare masina in parte, ca sa aiba interconnectivitate intre ei.
+This must be done on all 3 machines so they have interconnectivity
 
-Dupa modificarea fisierului hosts, mai aveti nevoie de fisierul **.ansible.cfg**. Acesta se pune in folderul $HOME al user-ului **student** (/home/student/.ansible.cfg)
+After you are done with the */etc/hosts* file, you will need the **.ansible.cfg**. This must be put into your *$HOME* folder of the **student** user (/home/student/.ansible.cfg)
 
 ## Scripts <a name="scripts"></a>
-    
-Scripturile sunt de doua feluri:
 
+There are two type of scripts:
 1. start-*
+   
+    -> these prepare the remote machine for the respective exercise/lab
 
-    -> aceste scripturi pregatesc sistemul remote pentru laboratorul respectiv
+3. finish-*
 
-2. finish-*
+    -> these clean up the remote system after you are done with the exercise/lab
 
-    -> aceste sripturi curata modificarile facute pe sistemul remote
+In case you do not see a *start-*/*finish-* script for an exercise/lab it means that that environment does not need to be prepared or cleaned after the exercise/lab.
 
-In cazurile in care pentru un exercitiu/laborator nu exista script de **start**, doar script de **finish** inseamna ca masina remote nu trebuie pregatit in mod special pentru laborator/exercitiu.
-
-Scripturile se ruleaza cu user-ul **student**, in urmatorul fel:
+The scripts **must** be run as the **student** user:
     
     [student@workstation ~]$ ansible-playbook script_name.yml -K
 
-- -K -> interogheaza user-ul pentru parola "sudo", acesta este nevoie pentru Ansible, ca sa poata sa faca modificari pe sistemul remote
-
-- optiunea de *-i* nu trebuie specificat, asa cum facem cand rulam scripturile pe serverele noastre, deoarece *inventory*-ul este specificat in fisierul de configuratie de Ansible 
-
-Ex.:
-
-    [student@workstation rh134]$ ansible-playbook start-netstorage-nfs.yml  -K
+- -K -> flag means that Ansible will interogate the user for the *sudo* password, this will be needed to run commands on the remote machine as the root user
