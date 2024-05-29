@@ -13,12 +13,13 @@
 The ansible scripts are separated in two categories, based on the books, so everything that belongs to the first book (rh124) it is put into the rh124 folder; everything that belongs to the second book (rh134) you will get it in the rh134 folder.
 
 Usernames and passwords are exactly the same as in the books.
+For the VMs to work correctly you will need a RedHat Developer account; if you already have a RedHat account joust login on the RedHat Developer page, if not you will have to create an account. The Developer account will be needed to register your machines to the RedHat environment, so you can have access to the repositories.
 
 ## Setup <a name="setup"></a>
 
 The setup is made in such way, that it tries to simulate the lab environment as close as possible.
 
-As for VM-s you will need 5 machines:
+As for VM-s, you will need 5 machines:
     
 1. **workstation**
 
@@ -96,18 +97,16 @@ To run the ansbile scripts, you have to install Ansible on the **workstation** m
 
 ## Connectivity <a name="connectivity"></a>
 
-The connections from the **workstation** to the other machines is done via SSH; to make it as seamless as possible, generate an SSH key pair for the **student**, the public key has to be copied to te other machines. The generated key has to be named *ansible*.
-De la **workstation** catre celelalte doua masini connexiunea se face prin SSH; trebuie sa generati o cheie standard SSH, pentru user-ul **student**, care trebuie copiat pe restul masinilor (**servera**, **serverb**). Cheia generata trebuie sa se numeasca *ansible*.
-Aceasta cheie va fii folosit si de catre Ansible.
+The connections from the **workstation** to the other machines is done via SSH; to make it as seamless as possible, generate an SSH key pair for the **student** user, the public key has to be copied to the other machines. The generated key has to be named *ansible*. This key will also be used by the Ansible scripts.
 
-Generarea cheii se face in urmatorul fel:
+To generate an SSH key pair un the following command:
 
     [student@workstation ~]$ ssh-keygen -f ~/.ssh/ansible -N ""
  
- unde:
+ where:
 
- - -f -> numele cheii care se va genera in folderul de .ssh de pe sistem
- - -N -> parola cheii; daca se specifica **""** inseamna ca cheia SSH nu este protejat cu parola
+ - -f -> name of the file that will contain the key, and will be saved into *~/.ssh* folder 
+ - -N -> the keys password; if **""** is specified (alais nothing) then, the key won`t be password protected
 
  Ca noua cheie sa fie folosite de catre SSH, tot in *~/.ssh/* trebuie creat un fisier numit **config** care sa contina urmatoarele date:
 
