@@ -4,7 +4,7 @@ echo "# ----------------------------- #"
 echo "# Getting the IP Addresses      #"
 echo "# ----------------------------- #"
 echo ""
-echo -n "Give Workstation IP Address"
+echo -n "Give workstation IP Address"
 read -r workstationip
 
 echo -n "Give servera IP Address"
@@ -59,7 +59,7 @@ echo "# --------------------------------- #"
 echo "# Installing Ansible on workstation #"
 echo" # --------------------------------- #"
 echo ""
-dnf install -y epel-release && dnf install -y ansible
+sudo dnf install -y epel-release && sudo dnf install -y ansible
 
 echo "# ------------------------------- #"
 echo "# Configuring Ansible Environment #"
