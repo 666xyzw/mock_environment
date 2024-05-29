@@ -60,8 +60,7 @@ done
 # Installing Ansible              #
 # ------------------------------- #
 echo "Installing Ansible on workstation"
-dnf install -y epel-release
-dnf install -y ansible
+dnf install -y epel-release && dnf install -y ansible
 
 # ------------------------------- #
 # Configuring Ansible Environment #
