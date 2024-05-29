@@ -1,8 +1,9 @@
 #!/bin/bash
 
-# ----------------------------- #
-# Getting the IP Addresses      #
-# ----------------------------- #
+echo "# ----------------------------- #"
+echo "# Getting the IP Addresses      #"
+echo "# ----------------------------- #"
+echo ""
 echo -n "Give Workstation IP Address"
 read -r workstationip
 
@@ -12,32 +13,30 @@ read -r serveraip
 echo -n "Give serverb IP Address"
 read -r serverbip
 
-# ----------------------------- #
-# Configuring /etc/hosts File   #
-# ----------------------------- #
+echo "# ----------------------------- #"
+echo "# Configuring /etc/hosts File   #"
+echo "# ----------------------------- #"
+echo ""
 echo "${workstationip} workstation.example.lab.com workstation" >> /etc/hosts
 echo "${serveraip} servera.example.lab.com servera" >> /etc/hosts
 echo "${serverbip} serverb.example.lab.com servera" >> /etc/hosts
 
-# ----------------------------- #
-# Create SSH Key for Ansible    #
-# ----------------------------- #
-echo "Generating SSH Key"
-
+echo "# ----------------------------- #"
+echo "# Create SSH Key for Ansible    #"
+echo "# ----------------------------- #"
+echo ""
 ssh-keygen -f ~/.ssh/ansible_key -N ""
 
-# ----------------------------- #
-# Deploy SSH Key for Ansible    #
-# ----------------------------- #
-echo "Deploying SSH Key to Servers"
-
+echo "# ----------------------------- #"
+echo "# Deploying SSH Key to Remote   #"
+echo "# ----------------------------- #"
+echo ""
 ssh-copy-id -i ~/.ssh/ansible_key.pub student@servera; ssh-copy-id -i ~/.ssh/ansible_key.pub student@serverb
 
-# ----------------------------- #
-# Configuring SSH config File   #
-# ----------------------------- #
-echo "Creating SSH Configuration File"
-
+echo "# ----------------------------- #"
+echo "# Configuring SSH config File   #"
+echo "# ----------------------------- #"
+echo ""
 if [[ -f ~/.ssh/config ]];
 then
     cat ./config >> ~/.ssh/config
@@ -45,10 +44,10 @@ else
     mv ./config ~/.ssh/config
 fi
 
-# ------------------------------- #
-# Deploy /etc/hosts Configuration #
-# ------------------------------- #
-echo "Deploying /etc/hosts Configuration to Remote Machines"
+echo "# ---------------------------------- #"
+echo "# Deploying /etc/hosts Configuration #"
+echo "# ---------------------------------- #"
+echo ""
 for machine in servera serverb
 do
     ssh student@${machine} sudo echo "${workstationip} workstation.example.lab.com workstation" >> /etc/hosts
@@ -56,13 +55,13 @@ do
     ssh student@${machine} sudo echo "${serverbip} serverb.example.lab.com servera" >> /etc/hosts
 done
 
-# ------------------------------- #
-# Installing Ansible              #
-# ------------------------------- #
-echo "Installing Ansible on workstation"
+echo "# --------------------------------- #"
+echo "# Installing Ansible on workstation #"
+echo" # --------------------------------- #"
+echo ""
 dnf install -y epel-release && dnf install -y ansible
 
-# ------------------------------- #
-# Configuring Ansible Environment #
-# ------------------------------- #
+echo "# ------------------------------- #"
+echo "# Configuring Ansible Environment #"
+echo "# ------------------------------- #"
 mv {.ansible.cfg,inventory} ~/
