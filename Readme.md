@@ -93,6 +93,7 @@ As for VM-s, you will need 5 machines:
 
 
 When you install these machines, from the menu you have to select the *System Tools* and *Security Tools* options.
+
 To run the ansbile scripts, you have to install Ansible on the **workstation** machine.
 
 ## Connectivity <a name="connectivity"></a>
