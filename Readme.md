@@ -12,9 +12,11 @@
 
 The ansible scripts are separated in two categories, based on the books, so everything that belongs to the first book (rh124) it is put into the rh124 folder; everything that belongs to the second book (rh134) you will get it in the rh134 folder.
 
+Usernames and passwords are exactly the same as in the books.
+
 ## Setup <a name="setup"></a>
 
-The setup is made in such way, that it tries to simulate the lab environment as close as possible
+The setup is made in such way, that it tries to simulate the lab environment as close as possible.
 
 As for VM-s you will need 5 machines:
     
