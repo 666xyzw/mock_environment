@@ -32,8 +32,8 @@ As for VM-s you will need 5 machines:
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - 5GB for labs/exercises
 
     -> Network:\
-       &nbsp;&nbsp;&nbsp;&nbsp;1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
-       &nbsp;&nbsp;&nbsp;&nbsp;2) NIC - for networking exercises/labs
+       &nbsp;&nbsp;&nbsp;&nbsp;1. NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
+       &nbsp;&nbsp;&nbsp;&nbsp;2. NIC - for networking exercises/labs
 
 3. **servera**
 
@@ -47,8 +47,8 @@ As for VM-s you will need 5 machines:
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - 5GB for labs/exercises
 
     -> Network:\
-       &nbsp;&nbsp;&nbsp;&nbsp;1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
-       &nbsp;&nbsp;&nbsp;&nbsp;2) NIC - for networking exercises/labs
+       &nbsp;&nbsp;&nbsp;&nbsp;1. NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
+       &nbsp;&nbsp;&nbsp;&nbsp;2. NIC - for networking exercises/labs
 
 4. **serverb**
 
@@ -62,8 +62,8 @@ As for VM-s you will need 5 machines:
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdc - 5GB for labs/exercises
 
     -> Network:\
-       &nbsp;&nbsp;&nbsp;&nbsp;1) NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
-       &nbsp;&nbsp;&nbsp;&nbsp;2) NIC - for networking exercises/labs
+       &nbsp;&nbsp;&nbsp;&nbsp;1. NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
+       &nbsp;&nbsp;&nbsp;&nbsp;2. NIC - for networking exercises/labs
 
 5. **PXE**
 
@@ -72,10 +72,10 @@ As for VM-s you will need 5 machines:
     -> minimal install + System Tools
 
     -> Disks:\
-        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 50GB for OS
+        &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 50GB for OS + data
     
     -> Network:\
-       &nbsp;&nbsp;&nbsp;&nbsp;1) NIC - for SSH/internet connectivity/serving repo for the Demo machine - must be on the same subnet as the rest of the machines
+       &nbsp;&nbsp;&nbsp;&nbsp;1. NIC - for SSH/internet connectivity/serving repo for the Demo machine - must be on the same subnet as the rest of the machines
     -> it`s necessarry for the *Kickstart* lab
 
 7. **Demo**
@@ -91,12 +91,12 @@ As for VM-s you will need 5 machines:
     -> it`s necessarry for the *Kickstart* lab; with this machine you can test if the kickstart file works as is should
 
 
-La instalarea acestor masini, din meniu, trebuie se selectati si optiunile de System Tools si Security Tools (aici trebuie instalat separat si *setroubleshoot* ca SELinux sa scrie erroriile si in */var/log/messages*), de ultima va fii nevoie pentru laboratoarele cu SELinux.
-
-Pentru simularea scripturilor de start/finish din laboratoarele din carti, este nevoie sa instalati Ansible pe **workstation**.
+When you install these machines, from the menu you have tol select the *System Tools* and *Security Tools* options.
+To run the ansbile scripts, you have to install Ansible on the **workstation** machine.
 
 ## Connectivity <a name="connectivity"></a>
 
+The connections from the **workstation** to the other machines is done via SSH; to make it as seamless as possible, generate an SSH key pair for the **student**, the public key has to be copied to te other machines. The generated key has to be named *ansible*.
 De la **workstation** catre celelalte doua masini connexiunea se face prin SSH; trebuie sa generati o cheie standard SSH, pentru user-ul **student**, care trebuie copiat pe restul masinilor (**servera**, **serverb**). Cheia generata trebuie sa se numeasca *ansible*.
 Aceasta cheie va fii folosit si de catre Ansible.
 
