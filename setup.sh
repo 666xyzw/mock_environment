@@ -3,13 +3,13 @@
 # ----------------------------- #
 # Getting the IP Addresses      #
 # ----------------------------- #
-echo -n "Workstation IP Address"
+echo -n "Give Workstation IP Address"
 read -r workstationip
 
-echo -n "Servera IP Address"
+echo -n "Give servera IP Address"
 read -r serveraip
 
-echo -n "Serverb IP Address"
+echo -n "Give serverb IP Address"
 read -r serverbip
 
 # ----------------------------- #
