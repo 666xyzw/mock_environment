@@ -171,7 +171,7 @@ There are two type of scripts:
 
     -> these clean up the remote system after you are done with the exercise/lab
 
-In case you do not see a *start-*/*finish-* script for an exercise/lab it means that that environment does not need to be prepared or cleaned after the exercise/lab.
+In case you do not see a *start-\**/*finish-\** script for an exercise/lab it means that that remote machine does not need to be prepared or cleaned after the exercise/lab.
 
 The scripts **must** be run as the **student** user:
     
