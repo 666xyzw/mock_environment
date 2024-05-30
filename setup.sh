@@ -13,9 +13,9 @@ read -r serveraip
 echo -n "Give serverb IP Address"
 read -r serverbip
 
-echo "# ----------------------------- #"
-echo "# Configuring /etc/hosts File   #"
-echo "# ----------------------------- #"
+echo "# ----------------------------------- #"
+echo "# Configuring local /etc/hosts File   #"
+echo "# ----------------------------------- #"
 echo ""
 echo "${workstationip} workstation.example.lab.com workstation" >> /etc/hosts
 echo "${serveraip} servera.example.lab.com servera" >> /etc/hosts
