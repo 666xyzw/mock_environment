@@ -92,10 +92,6 @@ As for VM-s, you will need 5 machines:
     -> it`s necessarry for the *Kickstart* lab; with this machine you can test if the kickstart file works as is should
 
 
-When you install these machines, from the menu you have to select the *System Tools* and *Security Tools* options.
-
-To run the ansbile scripts, you have to install Ansible on the **workstation** machine.
-
 ## Connectivity <a name="connectivity"></a>
 
 The connections from the **workstation** to the other machines is done via SSH; to make it as seamless as possible, generate an SSH key pair for the **student** user, the public key has to be copied to the other machines. The generated key has to be named *ansible*. This key will also be used by the Ansible scripts.
@@ -161,6 +157,8 @@ This must be done on all 3 machines so they have interconnectivity
 After you are done with the */etc/hosts* file, you will need the **.ansible.cfg**. This must be put into your *$HOME* folder of the **student** user (/home/student/.ansible.cfg)
 
 ## Scripts <a name="scripts"></a>
+
+To run the ansbile scripts, you have to install Ansible on the **workstation** machine. If you have not done it, see the previous topic.
 
 There are two type of scripts:
 1. start-*
