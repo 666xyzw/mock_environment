@@ -23,9 +23,7 @@ As for VM-s, you will need 5 machines:
     
 1. **workstation**
 
-    -> OS: RHEL9
-
-    -> Server with GUI + System Tools + Security Tools
+    -> OS: RHEL9 ( Server with GUI + System Tools + Security Tools )
 
     -> CPU: 4 vCPU
 
@@ -42,9 +40,7 @@ As for VM-s, you will need 5 machines:
 
 3. **servera**
 
-    -> OS: RHEL9
-
-    -> minimal install + System Tools + Security Tools
+    -> OS: RHEL9 ( minimal install + System Tools + Security Tools )
 
     -> CPU: 3 vCPU
 
@@ -61,9 +57,7 @@ As for VM-s, you will need 5 machines:
 
 5. **serverb**
 
-    -> OS: RHEL9
-
-    -> minimal install + System Tools + Security Tools
+    -> OS: RHEL9 ( minimal install + System Tools + Security Tools )
 
     -> CPU: 3 vCPU
 
@@ -80,9 +74,7 @@ As for VM-s, you will need 5 machines:
 
 6. **PXE**
 
-    -> OS: RHEL9
-
-    -> minimal install + System Tools
+    -> OS: RHEL9 ( minimal install + System Tools )
 
     -> CPU: 2 vCPU
 
