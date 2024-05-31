@@ -26,7 +26,11 @@ As for VM-s, you will need 5 machines:
     -> OS: RHEL9
 
     -> Server with GUI + System Tools + Security Tools
-    
+
+    -> CPU: 2 vCPU
+
+    -> RAM: 3 GB
+   
     -> Disks:\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB, for OS\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - 5GB for labs/exercises\
@@ -41,7 +45,11 @@ As for VM-s, you will need 5 machines:
     -> OS: RHEL9
 
     -> minimal install + System Tools + Security Tools
-    
+
+    -> CPU: 3 vCPU
+
+    -> RAM: 3 GB
+   
     -> Disks:\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB, for OS\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - 5GB for labs/exercises\
@@ -51,12 +59,16 @@ As for VM-s, you will need 5 machines:
        &nbsp;&nbsp;&nbsp;&nbsp;1. NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
        &nbsp;&nbsp;&nbsp;&nbsp;2. NIC - for networking exercises/labs
 
-4. **serverb**
+5. **serverb**
 
     -> OS: RHEL9
 
     -> minimal install + System Tools + Security Tools
 
+    -> CPU: 3 vCPU
+
+    -> RAM: 3 GB
+   
     -> Disks:\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB, for OS\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sdb - 5GB for labs/exercises\
@@ -66,12 +78,16 @@ As for VM-s, you will need 5 machines:
        &nbsp;&nbsp;&nbsp;&nbsp;1. NIC - for SSH/internet connectivity - must be on the same subnet as the rest of the machines\
        &nbsp;&nbsp;&nbsp;&nbsp;2. NIC - for networking exercises/labs
 
-5. **PXE**
+6. **PXE**
 
     -> OS: RHEL9
 
     -> minimal install + System Tools
 
+    -> CPU: 2 vCPU
+
+    -> RAM: 2 GB
+   
     -> Disks:\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 50GB for OS + data
     
@@ -83,6 +99,10 @@ As for VM-s, you will need 5 machines:
 
     -> OS: RHEL9
 
+    -> CPU: 2 vCPU
+
+    -> RAM: 2 GB
+   
     -> Disks:\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB for OS
 
