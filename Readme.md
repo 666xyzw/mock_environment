@@ -74,7 +74,7 @@ As for VM-s, you will need 5 machines:
 
 6. **PXE**
 
-    -> OS: RHEL9 ( minimal install + System Tools )
+    -> OS: RHEL9 ( minimal install + System Tools + Apache/Nginx )
 
     -> CPU: 2 vCPU
 
