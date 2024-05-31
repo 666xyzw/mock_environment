@@ -27,7 +27,7 @@ As for VM-s, you will need 5 machines:
 
     -> Server with GUI + System Tools + Security Tools
 
-    -> CPU: 2 vCPU
+    -> CPU: 4 vCPU
 
     -> RAM: 3 GB
    
@@ -48,7 +48,7 @@ As for VM-s, you will need 5 machines:
 
     -> CPU: 3 vCPU
 
-    -> RAM: 3 GB
+    -> RAM: 4 GB
    
     -> Disks:\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB, for OS\
@@ -67,7 +67,7 @@ As for VM-s, you will need 5 machines:
 
     -> CPU: 3 vCPU
 
-    -> RAM: 3 GB
+    -> RAM: 4 GB
    
     -> Disks:\
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 20GB, for OS\
@@ -99,7 +99,7 @@ As for VM-s, you will need 5 machines:
 
     -> OS: RHEL9
 
-    -> CPU: 2 vCPU
+    -> CPU: 1 vCPU
 
     -> RAM: 2 GB
    
