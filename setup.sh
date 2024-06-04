@@ -17,9 +17,9 @@ echo "# ----------------------------------- #"
 echo "# Configuring local /etc/hosts File   #"
 echo "# ----------------------------------- #"
 echo ""
-echo "${workstationip} workstation.example.lab.com workstation" >> /etc/hosts
-echo "${serveraip} servera.example.lab.com servera" >> /etc/hosts
-echo "${serverbip} serverb.example.lab.com servera" >> /etc/hosts
+echo "${workstationip} workstation" | sudo tee -a /etc/hosts > /dev/null
+echo "${serveraip} servera" | sudo tee -a /etc/hosts > /dev/null
+echo "${serverbip} serverb" | sudo tee -a /etc/hosts > /dev/null
 
 echo "# ----------------------------- #"
 echo "# Create SSH Key for Ansible    #"
@@ -37,12 +37,19 @@ echo "# ----------------------------- #"
 echo "# Configuring SSH config File   #"
 echo "# ----------------------------- #"
 echo ""
-if [[ -f ~/.ssh/config ]];
-then
-    cat ./config >> ~/.ssh/config
-else
-    mv ./config ~/.ssh/config
-fi
+cat >> ~/.ssh/config<<EOF
+Host servera
+    Hostname servera
+    User student
+    Port 22
+    IdentityFile ~/.ssh/ansible_key
+
+Host serverb
+    Hostname serverb
+    User student
+    Port 22
+    IdentityFile ~/.ssh/ansible_key
+EOF
 
 echo "# ---------------------------------- #"
 echo "# Deploying /etc/hosts Configuration #"
@@ -50,16 +57,16 @@ echo "# ---------------------------------- #"
 echo ""
 for machine in servera serverb
 do
-    ssh student@${machine} sudo echo "${workstationip} workstation.example.lab.com workstation" >> /etc/hosts
-    ssh student@${machine} sudo echo "${serveraip} servera.example.lab.com servera" >> /etc/hosts
-    ssh student@${machine} sudo echo "${serverbip} serverb.example.lab.com servera" >> /etc/hosts
+    ssh -t student@${machine} "echo '${workstationip} workstation' | sudo tee -a /etc/hosts > /dev/null"
+    ssh -t student@${machine} "echo '${serveraip} servera' | sudo tee -a /etc/hosts > /dev/null"
+    ssh -t student@${machine} "echo '${serverbip} serverb' | sudo tee -a /etc/hosts > /dev/null"
 done
 
 echo "# --------------------------------- #"
 echo "# Installing Ansible on workstation #"
 echo" # --------------------------------- #"
 echo ""
-sudo dnf install -y epel-release && sudo dnf install -y ansible
+sudo dnf install -y ansible-core
 
 echo "# ------------------------------- #"
 echo "# Configuring Ansible Environment #"
