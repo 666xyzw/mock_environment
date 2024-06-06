@@ -4,13 +4,13 @@ echo "# ----------------------------- #"
 echo "# Getting the IP Addresses      #"
 echo "# ----------------------------- #"
 echo ""
-echo -n "Give workstation IP Address"
+echo -n "Give workstation IP Address "
 read -r workstationip
 
-echo -n "Give servera IP Address"
+echo -n "Give servera IP Address "
 read -r serveraip
 
-echo -n "Give serverb IP Address"
+echo -n "Give serverb IP Address "
 read -r serverbip
 
 echo "# ----------------------------------- #"
@@ -72,3 +72,10 @@ echo "# ------------------------------- #"
 echo "# Configuring Ansible Environment #"
 echo "# ------------------------------- #"
 mv {.ansible.cfg,inventory} ~/
+
+if [[ $? -eq 0 ]]
+then
+	echo -e "\033[0;32m Environment Configured Successfully!\033[0m"
+else
+	echo -e "\033[0;31m Environment Configuration Failed!\033[0m"
+fi
