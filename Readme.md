@@ -132,7 +132,7 @@ The scripts **must** be run as the **student** user:
 
 ## The setup.sh Script <a name="setup_script"></a>
 
-The **setup.sh** shell script will configure the environment, meaning:\
+The **setup.sh** shell script will configure the environment, meaning:
 
 - configure the */etc/hosts* file, on the workstation and also on the remove machines\
 - generate the SSH key pair and deploy the public key on the remote machines\
