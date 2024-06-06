@@ -27,9 +27,9 @@ echo "# ----------------------------- #"
 echo ""
 ssh-keygen -f ~/.ssh/ansible_key -N ""
 
-echo "# ----------------------------- #"
-echo "# Deploying SSH Key to Remote   #"
-echo "# ----------------------------- #"
+echo "# ------------------------------------- #"
+echo "# Deploying SSH Key to Remote Machines  #"
+echo "# ------------------------------------- #"
 echo ""
 ssh-copy-id -i ~/.ssh/ansible_key.pub student@servera; ssh-copy-id -i ~/.ssh/ansible_key.pub student@serverb
 
