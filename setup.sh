@@ -31,7 +31,8 @@ echo "# ------------------------------------- #"
 echo "# Deploying SSH Key to Remote Machines  #"
 echo "# ------------------------------------- #"
 echo ""
-ssh-copy-id -i ~/.ssh/ansible_key.pub student@servera; ssh-copy-id -i ~/.ssh/ansible_key.pub student@serverb
+ssh-copy-id -i ~/.ssh/ansible_key.pub student@servera
+ssh-copy-id -i ~/.ssh/ansible_key.pub student@serverb
 
 echo "# ----------------------------- #"
 echo "# Configuring SSH config File   #"
@@ -61,6 +62,16 @@ do
     ssh -t student@${machine} "echo '${serveraip} servera' | sudo tee -a /etc/hosts > /dev/null"
     ssh -t student@${machine} "echo '${serverbip} serverb' | sudo tee -a /etc/hosts > /dev/null"
 done
+
+echo "# ------------------------------------------- #"
+echo "# Configuring Secondary NIC in the Scritps    #"
+echo" # ------------------------------------------- #"
+echo ""
+sec_nic_a=$(ssh student@servera "ip -br link show | awk '{print $1}' | awk 'END {print}'")
+sec_nic_b=$(ssh student@serverb "ip -br link show | awk '{print $1}' | awk 'END {print}'")
+
+echo "Secondary NIC on servera: ${sec_nic_a}"
+echo "Secondary NIC on serverb: ${sec_nic_b}"
 
 echo "# --------------------------------- #"
 echo "# Installing Ansible on workstation #"
