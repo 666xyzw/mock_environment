@@ -132,11 +132,11 @@ The scripts **must** be run as the **student** user:
 
 ## The setup.sh Script <a name="setup_script"></a>
 
-The **setup.sh** shell script will configure the environment, meaning:\
+The **setup.sh** shell script will configure the environment, meaning:
 
-- configure the */etc/hosts* file, on the workstation and also on the remove machines\
-- generate the SSH key pair and deploy the public key on the remote machines\
-- install Ansible on the *workstaion*\
+- configure the */etc/hosts* file, on the workstation and also on the remove machines
+- generate the SSH key pair and deploy the public key on the remote machines
+- install Ansible on the *workstaion*
 - move the Ansible configuration files to their location
 
 To run the script enter the following in the terminal (make sure you are int the *mock_environment* folder):
