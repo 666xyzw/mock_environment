@@ -19,7 +19,7 @@ echo "# ----------------------------------- #"
 echo ""
 echo "${workstationip} workstation" | sudo tee -a /etc/hosts > /dev/null
 echo "${serveraip} servera" | sudo tee -a /etc/hosts > /dev/null
-echo "${serverbip} serverb" | sudo tee -a /etc/hosts > /dev/null
+ echo "${serverbip} serverb" | sudo tee -a /etc/hosts > /dev/null
 
 echo "# ----------------------------- #"
 echo "# Create SSH Key for Ansible    #"
@@ -31,8 +31,7 @@ echo "# ------------------------------------- #"
 echo "# Deploying SSH Key to Remote Machines  #"
 echo "# ------------------------------------- #"
 echo ""
-ssh-copy-id -i ~/.ssh/ansible_key.pub student@servera
-ssh-copy-id -i ~/.ssh/ansible_key.pub student@serverb
+ssh-copy-id -i ~/.ssh/ansible_key.pub student@servera; ssh-copy-id -i ~/.ssh/ansible_key.pub student@serverb
 
 echo "# ----------------------------- #"
 echo "# Configuring SSH config File   #"
@@ -63,19 +62,25 @@ do
     ssh -t student@${machine} "echo '${serverbip} serverb' | sudo tee -a /etc/hosts > /dev/null"
 done
 
-echo "# ------------------------------------------- #"
-echo "# Configuring Secondary NIC in the Scritps    #"
-echo" # ------------------------------------------- #"
-echo ""
-sec_nic_a=$(ssh student@servera "ip -br link show | awk '{print $1}' | awk 'END {print}'")
-sec_nic_b=$(ssh student@serverb "ip -br link show | awk '{print $1}' | awk 'END {print}'")
 
-echo "Secondary NIC on servera: ${sec_nic_a}"
-echo "Secondary NIC on serverb: ${sec_nic_b}"
+echo "# --------------------------------------------------- #"
+echo "# Getting Secondary NIC Data from the Remote Machines #"
+echo "# --------------------------------------------------- #"
+echo ""
+sec_nic=$(ssh student@servera "ip -br link show" | awk '{print $1}' | awk 'END{print}')
+
+echo "Secondary NIC: ${sec_nic}"
+
+echo "# ------------------------------------ #"
+echo "# Configuring Secondary NIC in Scripts #"
+echo "# ------------------------------------ #"
+echo ""
+
+sed -i "s/SEC_NIC/${sec_nic}/g" ./rh124/*
 
 echo "# --------------------------------- #"
 echo "# Installing Ansible on workstation #"
-echo" # --------------------------------- #"
+echo "# --------------------------------- #"
 echo ""
 sudo dnf install -y ansible-core
 
@@ -86,7 +91,7 @@ mv {.ansible.cfg,inventory} ~/
 
 if [[ $? -eq 0 ]]
 then
-	echo -e "\033[0;32m Environment Configured Successfully!\033[0m"
+	echo -e "\033[32m Environment Configured Successfully!\033[m"
 else
-	echo -e "\033[0;31m Environment Configuration Failed!\033[0m"
+	echo -e "\033[31m Environment Configuration Failed!\033[m"
 fi

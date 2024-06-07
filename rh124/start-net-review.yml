@@ -6,5 +6,5 @@
   tasks:
 
     - name: Configuring Network
-      shell: "nmcli con mod enp0s9 ipv4.method manual ipv4.address 172.25.250.11/24 ipv4.gateway 172.25.250.254 ipv4.dns 172.25.250.254; nmcli con reload; nmcli con up enp0s9"
+      shell: "nmcli con mod SEC_NIC ipv4.method manual ipv4.address 172.25.250.11/24 ipv4.gateway 172.25.250.254 ipv4.dns 172.25.250.254; nmcli con reload; nmcli con up SEC_NIC"
       ignore_errors: true
