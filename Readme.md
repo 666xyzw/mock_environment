@@ -83,10 +83,13 @@ As for VM-s, you will need 5 machines:
         &nbsp;&nbsp;&nbsp;&nbsp;- /dev/sda - 50GB for OS + data
     
     -> Network:\
-       &nbsp;&nbsp;&nbsp;&nbsp;1. NIC - for SSH/internet connectivity/serving repo for the Demo machine - must be on the same subnet as the rest of the machines
+       &nbsp;&nbsp;&nbsp;&nbsp;1. NIC - for SSH/internet connectivity/serving local repo for the Demo machine - must be on the same subnet as the rest of the machines
+
+    -> after installing a http server; copy a RHEL dvd ISO into the VM, extract the ISO with *dd* command into the path from where you want to serve the content;
+   
     -> it`s necessarry for the *Kickstart* lab
 
-7. **Demo**
+8. **Demo**
 
     -> OS: RHEL9
 
