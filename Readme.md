@@ -110,7 +110,7 @@ The connections from the **workstation** to the other machines is done via SSH; 
 
 ## Ansible Scripts <a name="ansible_scripts"></a>
 
-To run the ansbile scripts, you have to install Ansible on the **workstation** machine. If you have not done it, see the previous topic.
+To run the ansbile scripts, you will need Ansible on the **workstation** machine. The *setup.sh* script will install and configure it automatically.
 
 There are two type of scripts:
 1. start-*
@@ -136,7 +136,7 @@ The **setup.sh** shell script will configure the environment, meaning:
 
 - configure the */etc/hosts* file, on the workstation and also on the remove machines
 - generate the SSH key pair and deploy the public key on the remote machines
-- install Ansible on the *workstaion*
+- installs Ansible on the *workstaion*
 - move the Ansible configuration files to their location
 
 To run the script enter the following in the terminal (make sure you are int the *mock_environment* folder):
